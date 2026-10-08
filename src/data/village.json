@@ -1,0 +1,523 @@
+{
+  "identity": {
+    "nameEn": "MERHA VILLAGE",
+    "nameHi": "मेड़ा गांव",
+    "fullLocationHi": "मेड़ा गांव, जमदाहा, बांका, बिहार",
+    "fullLocationEn": "Merha Village, Jamdhaha Panchayat, Katoria Block, Banka District, Bihar, India",
+    "taglineHi": "हमारा गांव • हमारी पहचान • हमारी संस्कृति",
+    "taglineEn": "Our Village • Our Identity • Our Culture",
+    "heroImage": "/src/assets/images/merha_hero_landscape_1791458712697.jpg",
+    "description": "Nestled amidst the serene forested hills of Katoria Block and nourished by the gentle waters of the Kurar River, Merha Village (मेड़ा गांव) embodies the timeless spirit, agrarian vitality, and collective harmony of rural Bihar."
+  },
+  "about": {
+    "overview": "Merha (मेड़ा) is a vibrant rural settlement situated under the administrative jurisdiction of Jamdhaha Panchayat in Katoria Block, Banka District, Bihar. Surrounded by natural sal forests, undulating hills, and fertile agricultural lands watered by the Kurar River, the village stands as a proud community rooted in mutual respect, education, and sustainable rural living.",
+    "narrativeQuote": "जहाँ कुरार नदी की कल-कल धारा और कटोरिया की हरी-भरी पहाड़ियाँ हमारे गांव की पहचान को संवारती हैं।",
+    "facts": [
+      {
+        "id": "fact-village",
+        "labelEn": "Village Name",
+        "labelHi": "गांव का नाम",
+        "valueEn": "Merha",
+        "valueHi": "मेड़ा",
+        "detail": "Official revenue village in Jamdhaha"
+      },
+      {
+        "id": "fact-panchayat",
+        "labelEn": "Gram Panchayat",
+        "labelHi": "ग्राम पंचायत",
+        "valueEn": "Jamdhaha",
+        "valueHi": "जमदाहा",
+        "detail": "Local self-government administrative unit"
+      },
+      {
+        "id": "fact-block",
+        "labelEn": "Block / Tehsil",
+        "labelHi": "प्रखंड / अंचल",
+        "valueEn": "Katoria",
+        "valueHi": "कटोरिया",
+        "detail": "Community development block in Banka"
+      },
+      {
+        "id": "fact-district",
+        "labelEn": "District",
+        "labelHi": "ज़िला",
+        "valueEn": "Banka",
+        "valueHi": "बांका",
+        "detail": "Bhagalpur Division, Bihar"
+      },
+      {
+        "id": "fact-state",
+        "labelEn": "State",
+        "labelHi": "राज्य",
+        "valueEn": "Bihar",
+        "valueHi": "बिहार",
+        "detail": "Eastern India cultural heartland"
+      },
+      {
+        "id": "fact-country",
+        "labelEn": "Country",
+        "labelHi": "देश",
+        "valueEn": "India",
+        "valueHi": "भारत",
+        "detail": "Republic of India"
+      }
+    ]
+  },
+  "statistics": [
+    {
+      "id": "stat-village",
+      "label": "Core Settlement",
+      "labelHi": "मुख्य ग्राम",
+      "value": 1,
+      "suffix": "Unified Village",
+      "note": "Merha (मेड़ा गांव)"
+    },
+    {
+      "id": "stat-wards",
+      "label": "Panchayat Wards",
+      "labelHi": "ग्राम वार्ड",
+      "value": 2,
+      "suffix": "Active Wards",
+      "note": "Ward No. 1 & Ward No. 2"
+    },
+    {
+      "id": "stat-schools",
+      "label": "Educational Access",
+      "labelHi": "शिक्षण संस्थान",
+      "value": 2,
+      "suffix": "School Levels",
+      "note": "Middle & High School Access"
+    },
+    {
+      "id": "stat-temples",
+      "label": "Sacred Spaces",
+      "labelHi": "मंदिर एवं आस्था केंद्र",
+      "value": 3,
+      "suffix": "Shrines",
+      "note": "Editable village temple count"
+    },
+    {
+      "id": "stat-nature",
+      "label": "Natural Landmarks",
+      "labelHi": "प्राकृतिक धरोहर",
+      "value": 5,
+      "suffix": "Eco Zones",
+      "note": "River, Bridge, Hills, Forest & Fields"
+    }
+  ],
+  "highlights": [
+    {
+      "id": "hl-river",
+      "titleEn": "Kurar River",
+      "titleHi": "कुरार नदी",
+      "category": "Hydrology & Lifeline",
+      "description": "The scenic seasonal and perennial flow of the Kurar River nourishes the surrounding groundwater table and defines the natural boundary of the Merha landscape.",
+      "image": "/src/assets/images/merha_hero_landscape_1791458712697.jpg"
+    },
+    {
+      "id": "hl-bridge",
+      "titleEn": "Kurar River Bridge",
+      "titleHi": "कुरार नदी पुल",
+      "category": "Vital Connectivity",
+      "description": "A critical rural infrastructure link spanning the Kurar River, ensuring all-weather connectivity between Merha, Jamdhaha, and neighboring habitations.",
+      "image": "/src/assets/images/kurar_river_bridge_1791458725776.jpg"
+    },
+    {
+      "id": "hl-forest",
+      "titleEn": "Forest & Nature",
+      "titleHi": "वन एवं प्रकृति",
+      "category": "Biodiversity",
+      "description": "Rich natural woodlands featuring native sal, mahua, palash, and fruit-bearing trees that sustain clean air and traditional ecological harmony.",
+      "image": "/src/assets/images/katoria_hills_forest_1791458736547.jpg"
+    },
+    {
+      "id": "hl-hills",
+      "titleEn": "Surrounding Hills",
+      "titleHi": "पहाड़ियाँ एवं पठार",
+      "category": "Topography",
+      "description": "Gently rolling hills characteristic of the Katoria and Banka plateau region, offering panoramic sunrise and sunset vistas over the valley.",
+      "image": "/src/assets/images/katoria_hills_forest_1791458736547.jpg"
+    },
+    {
+      "id": "hl-fields",
+      "titleEn": "Agricultural Fields",
+      "titleHi": "कृषि एवं खेत-खलिहान",
+      "category": "Agrarian Economy",
+      "description": "Fertile terraced fields cultivated with seasonal paddy, wheat, maize, pulses, and mustard, forming the backbone of village livelihood.",
+      "image": "/src/assets/images/village_fields_farming_1791458747662.jpg"
+    },
+    {
+      "id": "hl-temples",
+      "titleEn": "Village Temples",
+      "titleHi": "मंदिर एवं आस्था स्थल",
+      "category": "Spiritual Heritage",
+      "description": "Serene devotional spaces where residents gather for daily prayers, seasonal festivals, and collective blessings for village prosperity.",
+      "image": "/src/assets/images/village_temple_culture_1791458758312.jpg"
+    },
+    {
+      "id": "hl-schools",
+      "titleEn": "Schools & Learning",
+      "titleHi": "विद्यालय एवं शिक्षा",
+      "category": "Future Generation",
+      "description": "Dedicated educational institutions nurturing young minds from foundational middle schooling through secondary high school studies.",
+      "image": "/src/assets/images/village_school_education_1791458769892.jpg"
+    },
+    {
+      "id": "hl-community",
+      "titleEn": "Village Community",
+      "titleHi": "ग्राम समाज एवं एकता",
+      "category": "Social Fabric",
+      "description": "A closely knit rural brotherhood defined by shared traditions, elder wisdom, youth initiatives, and collective decision-making.",
+      "image": "/src/assets/images/merha_hero_landscape_1791458712697.jpg"
+    }
+  ],
+  "importantPlaces": [
+    {
+      "id": "place-merha",
+      "nameEn": "Merha Village",
+      "nameHi": "मेड़ा गांव",
+      "relation": "Primary Settlement • Core Hub",
+      "description": "The heart of our community in Jamdhaha Panchayat, surrounded by greenery, residential wards, traditional courtyards, and agricultural lands.",
+      "image": "/src/assets/images/merha_hero_landscape_1791458712697.jpg",
+      "featured": true
+    },
+    {
+      "id": "place-kurar-river",
+      "nameEn": "Kurar River",
+      "nameHi": "कुरार नदी",
+      "relation": "Natural Waterway • Adjacent to Merha",
+      "description": "The primary river system flowing alongside the village, supporting seasonal irrigation, local ecology, and serene riverside landscapes.",
+      "image": "/src/assets/images/merha_hero_landscape_1791458712697.jpg",
+      "featured": false
+    },
+    {
+      "id": "place-kurar-bridge",
+      "nameEn": "Kurar River Bridge",
+      "nameHi": "कुरार नदी पुल",
+      "relation": "Key Infrastructure • River Crossing",
+      "description": "A landmark bridge across the Kurar River that connects villagers to main roads, markets, schools, and healthcare facilities even during monsoon months.",
+      "image": "/src/assets/images/kurar_river_bridge_1791458725776.jpg",
+      "featured": true
+    },
+    {
+      "id": "place-jamdhaha",
+      "nameEn": "Jamdhaha",
+      "nameHi": "जमदाहा",
+      "relation": "Panchayat Headquarters • Local Market",
+      "description": "The Gram Panchayat center and local hub for administrative affairs, weekly markets, public services, and secondary schooling.",
+      "image": "/src/assets/images/village_school_education_1791458769892.jpg",
+      "featured": false
+    },
+    {
+      "id": "place-domuhan",
+      "nameEn": "Domuhan",
+      "nameHi": "दोमुहान",
+      "relation": "Neighboring Locality • Confluence Point",
+      "description": "An important nearby locality in the Katoria-Jamdhaha belt known for its geographic junction and close social ties with Merha.",
+      "image": "/src/assets/images/katoria_hills_forest_1791458736547.jpg",
+      "featured": false
+    },
+    {
+      "id": "place-manija",
+      "nameEn": "Manija",
+      "nameHi": "मनिजा",
+      "relation": "Neighboring Village • Community Belt",
+      "description": "A closely connected neighboring village sharing cultural traditions, agricultural pathways, and regional fellowship with Merha.",
+      "image": "/src/assets/images/village_fields_farming_1791458747662.jpg",
+      "featured": false
+    },
+    {
+      "id": "place-karjhausa",
+      "nameEn": "Karjhausa",
+      "nameHi": "करझौसा",
+      "relation": "Neighboring Village • Jamdhaha Region",
+      "description": "An adjoining settlement in the local panchayat zone connected through rural roads and shared community life.",
+      "image": "/src/assets/images/village_temple_culture_1791458758312.jpg",
+      "featured": false
+    }
+  ],
+  "education": {
+    "ctaQuote": "Education is the future of our village.",
+    "ctaQuoteHi": "शिक्षा ही हमारे गांव के उज्ज्वल भविष्य की आधारशिला है।",
+    "summary": "Merha Village places strong emphasis on foundational literacy, higher secondary completion, and digital awareness for every child in the community.",
+    "pillars": [
+      {
+        "id": "edu-middle",
+        "titleEn": "Middle School Education",
+        "titleHi": "मध्य विद्यालय शिक्षा",
+        "level": "Primary & Upper Primary (Classes 1–8)",
+        "description": "Accessible foundational schooling providing primary literacy, numeracy, midday meals, and co-curricular encouragement for village children.",
+        "statusNote": "Editable School Name / UDISE Details"
+      },
+      {
+        "id": "edu-high",
+        "titleEn": "High School Access",
+        "titleHi": "उच्च विद्यालय शिक्षा",
+        "level": "Secondary & Senior Secondary (Classes 9–12)",
+        "description": "Secondary education pathway via the Jamdhaha / Katoria high school network, enabling students to pursue board examinations in science, arts, and commerce.",
+        "statusNote": "Editable High School Campus Details"
+      },
+      {
+        "id": "edu-awareness",
+        "titleEn": "Education Awareness",
+        "titleHi": "शिक्षा जागरूकता अभियान",
+        "level": "Community & Parent Engagement",
+        "description": "Ongoing community efforts encouraging 100% school enrollment, equal educational opportunities for daughters and sons, and prevention of school dropouts.",
+        "statusNote": "Community-Led Initiative"
+      },
+      {
+        "id": "edu-students",
+        "titleEn": "Students & Learning Culture",
+        "titleHi": "विद्यार्थी एवं अध्ययन संस्कृति",
+        "level": "Youth Mentorship & Competitive Prep",
+        "description": "Supporting village youth preparing for board exams, scholarships, technical diplomas, and public service careers through peer guidance.",
+        "statusNote": "Youth Study Group"
+      }
+    ]
+  },
+  "culture": {
+    "intro": "Our cultural identity is woven around agrarian rhythms, reverence for nature, and collective harmony. Exact historical dates and specific local traditions can be customized by village elders and administrators.",
+    "items": [
+      {
+        "id": "cult-festivals",
+        "titleEn": "Village Festivals",
+        "titleHi": "ग्रामीण पर्व एवं त्यौहार",
+        "description": "Seasonal and sacred celebrations where families return home, decorate courtyards, and observe auspicious rituals together along the river and village shrines.",
+        "editableNote": "Customizable festival calendar & local dates"
+      },
+      {
+        "id": "cult-tradition",
+        "titleEn": "Traditional Culture",
+        "titleHi": "पारंपरिक संस्कृति एवं लोकगीत",
+        "description": "Preserving regional spoken heritage, folk melodies, traditional hospitality (अतिथि सत्कार), and seasonal harvest customs passed down through generations.",
+        "editableNote": "Customizable regional cultural notes"
+      },
+      {
+        "id": "cult-temples",
+        "titleEn": "Temples & Devotion",
+        "titleHi": "मंदिर एवं आध्यात्मिक आस्था",
+        "description": "Village temples serve as peaceful centers of devotion, evening prayers, and collective spiritual gatherings.",
+        "editableNote": "Editable list of village deities and shrine names"
+      },
+      {
+        "id": "cult-community",
+        "titleEn": "Community Life",
+        "titleHi": "सामुदायिक जीवन एवं चौपाल",
+        "description": "Everyday village life thrives in shared spaces—morning discussions, cooperative farming seasons, and supporting neighbors in times of celebration or need.",
+        "editableNote": "Editable community milestones"
+      },
+      {
+        "id": "cult-local",
+        "titleEn": "Local Traditions",
+        "titleHi": "स्थानीय परंपराएं एवं प्रकृति प्रेम",
+        "description": "Deep respect for the Kurar River, surrounding forests, and agricultural land forms the core of Merha's sustainable rural way of life.",
+        "editableNote": "Editable local customs record"
+      },
+      {
+        "id": "cult-unity",
+        "titleEn": "Village Unity",
+        "titleHi": "ग्राम एकता एवं भाईचारा",
+        "description": "Regardless of background, residents stand united for village cleanliness, infrastructure care, and peaceful coexistence.",
+        "editableNote": "Community harmony charter"
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "id": "gal-1",
+      "title": "Golden Hour Over Merha & Kurar River",
+      "titleHi": "मेड़ा गांव और कुरार नदी का सूर्यास्त दृश्य",
+      "category": "Village",
+      "image": "/src/assets/images/merha_hero_landscape_1791458712697.jpg",
+      "caption": "Panoramic view representing the serene rural landscape of Merha Village, green fields, and the winding Kurar River."
+    },
+    {
+      "id": "gal-2",
+      "title": "Kurar River Bridge Crossing",
+      "titleHi": "कुरार नदी पुल",
+      "category": "Bridge",
+      "image": "/src/assets/images/kurar_river_bridge_1791458725776.jpg",
+      "caption": "Vital rural bridge connecting Merha with Jamdhaha and surrounding areas across the Kurar River."
+    },
+    {
+      "id": "gal-3",
+      "title": "Kurar River Waters",
+      "titleHi": "कुरार नदी की शांत धारा",
+      "category": "River",
+      "image": "/src/assets/images/merha_hero_landscape_1791458712697.jpg",
+      "caption": "Calm waters of the Kurar River reflecting the morning sky and bordering agricultural lands."
+    },
+    {
+      "id": "gal-4",
+      "title": "Katoria Hills & Sal Forest",
+      "titleHi": "कटोरिया की हरी-भरी पहाड़ियाँ और वन",
+      "category": "Hills",
+      "image": "/src/assets/images/katoria_hills_forest_1791458736547.jpg",
+      "caption": "Undulating hills and natural forest cover characteristic of the Katoria Block region in Banka District."
+    },
+    {
+      "id": "gal-5",
+      "title": "Natural Forest Biodiversity",
+      "titleHi": "प्राकृतिक वन संपदा",
+      "category": "Nature",
+      "image": "/src/assets/images/katoria_hills_forest_1791458736547.jpg",
+      "caption": "Lush woodland canopy surrounding the rural belt of Jamdhaha Panchayat."
+    },
+    {
+      "id": "gal-6",
+      "title": "Monsoon Paddy & Agricultural Fields",
+      "titleHi": "लहलहाते धान के खेत",
+      "category": "Fields",
+      "image": "/src/assets/images/village_fields_farming_1791458747662.jpg",
+      "caption": "Fertile green agricultural terraces cultivated by the hardworking farmers of Merha Village."
+    },
+    {
+      "id": "gal-7",
+      "title": "Sacred Evening Lamps & Festival Spirit",
+      "titleHi": "ग्राम मंदिर एवं पर्व उत्सव",
+      "category": "Festivals",
+      "image": "/src/assets/images/village_temple_culture_1791458758312.jpg",
+      "caption": "Warm devotional atmosphere at the village temple courtyard during evening prayers and seasonal festivals."
+    },
+    {
+      "id": "gal-8",
+      "title": "Village School Courtyard",
+      "titleHi": "ग्राम विद्यालय परिसर",
+      "category": "School",
+      "image": "/src/assets/images/village_school_education_1791458769892.jpg",
+      "caption": "A bright and welcoming rural school environment fostering education for the children of Merha."
+    }
+  ],
+  "wards": [
+    {
+      "id": "ward-1",
+      "titleEn": "Ward No. 1",
+      "titleHi": "वार्ड संख्या ०१ (Ward 1)",
+      "areaLabel": "Merha Residential & Northern/Eastern Sector (Editable)",
+      "representativeTitle": "Ward Member (वार्ड सदस्य)",
+      "representativeName": "To be updated (संपादनीय / Editable)",
+      "highlights": [
+        "Residential households and traditional village lanes",
+        "Drinking water (Har Ghar Nal Ka Jal) & rural street lighting access",
+        "Proximity to agricultural fields and community gathering spots"
+      ],
+      "notes": "Exact household count, voter list summary, and ward member contact can be updated via the Content Manager."
+    },
+    {
+      "id": "ward-2",
+      "titleEn": "Ward No. 2",
+      "titleHi": "वार्ड संख्या ०२ (Ward 2)",
+      "areaLabel": "Merha Southern/Riverside & Adjoining Sector (Editable)",
+      "representativeTitle": "Ward Member (वार्ड सदस्य)",
+      "representativeName": "To be updated (संपादनीय / Editable)",
+      "highlights": [
+        "Residential cluster connected toward Kurar River & main approach road",
+        "Rural road connectivity, sanitation, and seasonal irrigation access",
+        "Community spaces, shrines, and school pathway access"
+      ],
+      "notes": "Exact household count, infrastructure status, and ward representative details can be updated anytime."
+    }
+  ],
+  "administration": [
+    {
+      "id": "admin-panchayat",
+      "roleEn": "Gram Panchayat",
+      "roleHi": "ग्राम पंचायत",
+      "jurisdiction": "Jamdhaha (जमदाहा)",
+      "holderName": "Mukhiya / Sarpanch — Editable in Admin",
+      "contactInfo": "Panchayat Sarkar Bhawan, Jamdhaha"
+    },
+    {
+      "id": "admin-block",
+      "roleEn": "Community Development Block",
+      "roleHi": "प्रखंड मुख्यालय",
+      "jurisdiction": "Katoria Block (कटोरिया प्रखंड)",
+      "holderName": "Block Development Officer (BDO) Office",
+      "contactInfo": "Katoria, Banka District, Bihar"
+    },
+    {
+      "id": "admin-district",
+      "roleEn": "District Administration",
+      "roleHi": "ज़िला प्रशासन",
+      "jurisdiction": "Banka District (बांका ज़िला)",
+      "holderName": "District Collectorate, Banka",
+      "contactInfo": "Banka, Bihar – 813102"
+    },
+    {
+      "id": "admin-assembly",
+      "roleEn": "Assembly Constituency",
+      "roleHi": "विधानसभा क्षेत्र",
+      "jurisdiction": "Katoria / Banka Region (Editable)",
+      "holderName": "Representative Name — Editable Field",
+      "contactInfo": "Bihar Legislative Assembly Jurisdiction"
+    },
+    {
+      "id": "admin-representatives",
+      "roleEn": "Local Representatives",
+      "roleHi": "स्थानीय जनप्रतिनिधि",
+      "jurisdiction": "Panchayat Samiti / Ward Members",
+      "holderName": "Editable Roster (No unverified names assumed)",
+      "contactInfo": "Update verified names via Village Content Studio"
+    }
+  ],
+  "mapConfig": {
+    "locationQuery": "Merha, Jamdhaha, Katoria, Banka, Bihar, India",
+    "displayAddress": "Merha Village (मेड़ा गांव), Jamdhaha Panchayat, Katoria Block, Banka District, Bihar, India",
+    "embedUrl": "https://maps.google.com/maps?q=Jamdhaha,+Katoria,+Banka,+Bihar,+India&t=k&z=13&ie=UTF8&iwloc=&output=embed",
+    "externalMapsLink": "https://www.google.com/maps/search/?api=1&query=Merha+Jamdhaha+Katoria+Banka+Bihar+India",
+    "nearbyReferencePoints": [
+      "Jamdhaha Panchayat Center",
+      "Kurar River & Kurar River Bridge",
+      "Domuhan",
+      "Manija",
+      "Karjhausa",
+      "Katoria Block Headquarters"
+    ],
+    "note": "Map query and embed parameters are fully configurable. Exact GPS coordinates can be refined by village administrators without modifying code."
+  },
+  "newsUpdates": [
+    {
+      "id": "news-1",
+      "title": "Kurar River Bridge & Approach Road Maintenance Notice",
+      "titleHi": "कुरार नदी पुल एवं संपर्क पथ रखरखाव सूचना",
+      "category": "Road & Bridge",
+      "date": "October 2026",
+      "summary": "Community inspection and seasonal upkeep of the approach road connecting Merha Village to the Kurar River Bridge to ensure smooth transport after monsoon rains.",
+      "priority": "Important"
+    },
+    {
+      "id": "news-2",
+      "title": "New Academic Session & Village Education Awareness Drive",
+      "titleHi": "नया शैक्षणिक सत्र एवं ग्राम शिक्षा जागरूकता अभियान",
+      "category": "School Updates",
+      "date": "September 2026",
+      "summary": "Parents and guardians across Ward No. 1 and Ward No. 2 are encouraged to ensure regular attendance of children in Middle School and High School classes.",
+      "priority": "Education"
+    },
+    {
+      "id": "news-3",
+      "title": "Upcoming Autumn Festival & Village Cleanliness Initiative",
+      "titleHi": "आगामी पर्व-त्यौहार एवं ग्राम स्वच्छता अभियान",
+      "category": "Festivals & Events",
+      "date": "October 2026",
+      "summary": "Youth volunteers and village elders are organizing a collective cleanliness drive around village lanes, temples, and the Kurar riverside ahead of upcoming festivals.",
+      "priority": "Community"
+    },
+    {
+      "id": "news-4",
+      "title": "Gram Sabha & Ward Development Suggestions Open",
+      "titleHi": "ग्राम विकास एवं वार्ड सुझाव आमंत्रण",
+      "category": "Village Development",
+      "date": "Ongoing",
+      "summary": "Residents can submit suggestions regarding solar street lights, irrigation channels, and drinking water maintenance for Ward 1 and Ward 2.",
+      "priority": "General"
+    }
+  ],
+  "contactConfig": {
+    "mode": "local_and_api",
+    "customEndpointUrl": "",
+    "recipientEmail": "contact@merhavillage.in",
+    "officeAddress": "Merha Village (मेड़ा गांव), Post/Panchayat: Jamdhaha, Block: Katoria, District: Banka, Bihar, India",
+    "helpNote": "Submissions are stored locally and can be forwarded to any custom REST API endpoint, Formspree/Webhook URL, or email service configured in the Admin panel."
+  }
+}

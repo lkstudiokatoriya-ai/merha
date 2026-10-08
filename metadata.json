@@ -1,0 +1,6 @@
+{
+  "name": "Merha Village (मेड़ा गांव) – Official Digital Portal",
+  "description": "Official digital identity and community portal of Merha Village (मेड़ा गांव), Jamdhaha Panchayat, Katoria Block, Banka District, Bihar, India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
