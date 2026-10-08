@@ -14,6 +14,7 @@ import { GallerySection } from './components/GallerySection';
 import { WardsAndAdminSection } from './components/WardsAndAdminSection';
 import { MapSection } from './components/MapSection';
 import { NewsAndContactSection } from './components/NewsAndContactSection';
+import { SEOFaqSection } from './components/SEOFaqSection';
 import { Footer } from './components/Footer';
 import { AdminEditorModal } from './components/AdminEditorModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
@@ -32,6 +33,7 @@ export default function App() {
           <WardsAndAdminSection />
           <MapSection />
           <NewsAndContactSection />
+          <SEOFaqSection />
         </main>
         <Footer />
         <AdminEditorModal />

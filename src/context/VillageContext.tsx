@@ -173,9 +173,15 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (theme === 'dark') {
       root.classList.add('dark');
       root.classList.remove('light');
+      root.style.colorScheme = 'dark';
     } else {
       root.classList.add('light');
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
+    }
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute('content', theme === 'dark' ? '#071318' : '#FAF7F0');
     }
     try {
       localStorage.setItem(THEME_KEY, theme);

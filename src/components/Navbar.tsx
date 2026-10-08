@@ -111,11 +111,21 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="p-2 rounded-lg border border-stone-200 dark:border-white/10 text-stone-700 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-white/10 transition-colors cursor-pointer"
-            title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            aria-label={theme === 'dark' ? 'Switch to White (Light) mode' : 'Switch to Dark mode'}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-white/15 bg-white/80 dark:bg-white/[0.06] text-xs font-medium text-stone-800 dark:text-stone-200 hover:border-amber-500/50 transition-colors cursor-pointer whitespace-nowrap"
+            title={theme === 'dark' ? 'Switch to White Mode' : 'Switch to Dark Mode'}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+            {theme === 'dark' ? (
+              <>
+                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="w-3.5 h-3.5 text-stone-700" />
+                <span>Dark</span>
+              </>
+            )}
           </button>
 
           {isAdminAuthenticated && (

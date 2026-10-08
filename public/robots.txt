@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /email-*
+
+Sitemap: https://vill-merha.vercel.app/sitemap.xml
+Sitemap: https://vill-merha.ai.studio/sitemap.xml

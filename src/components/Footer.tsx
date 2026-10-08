@@ -103,6 +103,26 @@ export const Footer: React.FC = () => {
             <p>Block: Katoria (कटोरिया)</p>
             <p>District: Banka (बांका)</p>
             <p>State: Bihar, India</p>
+            <div className="pt-2 border-t border-stone-200 dark:border-white/10 space-y-1">
+              <p className="text-[11px] uppercase tracking-wider text-stone-400">
+                Official Web Portals
+              </p>
+              <p>
+                <a
+                  href="https://vill-merha.vercel.app"
+                  className="hover:text-amber-500 transition-colors"
+                >
+                  vill-merha.vercel.app
+                </a>
+                {' · '}
+                <a
+                  href="https://vill-merha.ai.studio"
+                  className="hover:text-amber-500 transition-colors"
+                >
+                  vill-merha.ai.studio
+                </a>
+              </p>
+            </div>
           </div>
         </div>
 
