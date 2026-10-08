@@ -40,9 +40,17 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-5 space-y-3">
             <a
               href="#home"
-              className="text-2xl font-bold font-display text-stone-900 dark:text-[#F4F1EA] tracking-tight"
+              className="inline-flex items-center gap-3 text-2xl font-bold font-display text-stone-900 dark:text-[#F4F1EA] tracking-tight"
             >
-              MERHA VILLAGE &nbsp;·&nbsp; <span className="font-hindi text-amber-600 dark:text-amber-400">मेड़ा गांव</span>
+              <img
+                src="/Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png"
+                alt="Merha Village Official Logo"
+                referrerPolicy="no-referrer"
+                className="w-11 h-11 rounded-full object-cover border border-amber-500/40 shadow-sm shrink-0"
+              />
+              <span>
+                MERHA VILLAGE &nbsp;·&nbsp; <span className="font-hindi text-amber-600 dark:text-amber-400">मेड़ा गांव</span>
+              </span>
             </a>
             <p className="text-sm font-hindi text-stone-600 dark:text-stone-300">
               “{data.identity.taglineHi}”

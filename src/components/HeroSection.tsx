@@ -35,10 +35,18 @@ export const HeroSection: React.FC = () => {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-3xl"
         >
-          {/* Quiet unboxed administrative metadata line */}
-          <p className="text-xs sm:text-sm tracking-widest uppercase text-amber-300/90 font-medium mb-4">
-            Jamdhaha Panchayat &nbsp;·&nbsp; Katoria Block &nbsp;·&nbsp; Banka District &nbsp;·&nbsp; Bihar
-          </p>
+          {/* Official Village Emblem / Logo + Administrative Metadata Line */}
+          <div className="flex items-center gap-3.5 mb-5">
+            <img
+              src="/Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png"
+              alt="Merha Village (मेड़ा गांव) Official Emblem"
+              referrerPolicy="no-referrer"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-amber-400/60 shadow-xl shadow-black/40 shrink-0"
+            />
+            <p className="text-xs sm:text-sm tracking-widest uppercase text-amber-300/95 font-medium leading-relaxed">
+              Jamdhaha Panchayat &nbsp;·&nbsp; Katoria Block &nbsp;·&nbsp; Banka District &nbsp;·&nbsp; Bihar
+            </p>
+          </div>
 
           {/* Primary English & Hindi Title */}
           <h1

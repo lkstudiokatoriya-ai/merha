@@ -50,12 +50,18 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-40 h-16 w-full border-b border-stone-200/80 dark:border-white/10 bg-[#FAF7F0]/90 dark:bg-[#071318]/85 backdrop-blur-md transition-colors">
       <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-        {/* Zone 1: Single Text Element Brand Wordmark */}
+        {/* Zone 1: Brand Logo & Wordmark */}
         <a
           href="#home"
-          className="text-xl sm:text-2xl font-bold tracking-tight font-display text-stone-900 dark:text-[#F4F1EA] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
+          className="inline-flex items-center gap-2.5 text-xl sm:text-2xl font-bold tracking-tight font-display text-stone-900 dark:text-[#F4F1EA] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
         >
-          MERHA VILLAGE
+          <img
+            src="/Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png"
+            alt="Merha Village Official Logo"
+            referrerPolicy="no-referrer"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-amber-500/40 shadow-sm shrink-0"
+          />
+          <span>MERHA VILLAGE</span>
         </a>
 
         {/* Zone 2: Clean Text Navigation Links */}
