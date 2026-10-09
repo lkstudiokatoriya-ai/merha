@@ -13,6 +13,8 @@ export default defineConfig(() => {
         registerType: 'autoUpdate',
         includeAssets: [
           'logo.png',
+          'og-share.jpg',
+          'og-logo.jpg',
           'Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png',
           'icon.svg',
           'apple-touch-icon.png',
