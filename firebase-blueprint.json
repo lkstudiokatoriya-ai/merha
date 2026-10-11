@@ -1,0 +1,142 @@
+{
+  "entities": {
+    "VillagePortalConfig": {
+      "title": "VillagePortalConfig",
+      "description": "Public content configuration for Merha Village portal including identity, about, statistics, highlights, places, education, culture, gallery, wards, administration, map, and news.",
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": "object",
+          "description": "Hero and core identity fields of Merha Village"
+        },
+        "about": {
+          "type": "object",
+          "description": "About overview, quote, and gazetteer facts"
+        },
+        "statistics": {
+          "type": "array",
+          "description": "Statistical counters for Merha Village"
+        },
+        "highlights": {
+          "type": "array",
+          "description": "8 signature highlights of the village"
+        },
+        "importantPlaces": {
+          "type": "array",
+          "description": "Important places in and around Merha Village"
+        },
+        "education": {
+          "type": "object",
+          "description": "Education section content and pillars"
+        },
+        "culture": {
+          "type": "object",
+          "description": "Cultural and community life items"
+        },
+        "gallery": {
+          "type": "array",
+          "description": "Gallery photos and categories"
+        },
+        "wards": {
+          "type": "array",
+          "description": "Ward No. 1 and Ward No. 2 details"
+        },
+        "administration": {
+          "type": "array",
+          "description": "Local administration directory"
+        },
+        "mapConfig": {
+          "type": "object",
+          "description": "Village map embed and reference configuration"
+        },
+        "newsUpdates": {
+          "type": "array",
+          "description": "Village news and community notices"
+        },
+        "contactConfig": {
+          "type": "object",
+          "description": "Contact section configuration"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last update"
+        },
+        "updatedBy": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-@\\.]+$",
+          "description": "Identifier or UID of the admin who updated the config"
+        }
+      },
+      "required": [
+        "identity",
+        "about",
+        "statistics",
+        "highlights",
+        "importantPlaces",
+        "education",
+        "culture",
+        "gallery",
+        "wards",
+        "administration",
+        "mapConfig",
+        "newsUpdates",
+        "contactConfig",
+        "updatedAt",
+        "updatedBy"
+      ]
+    },
+    "ContactSuggestion": {
+      "title": "ContactSuggestion",
+      "description": "Public citizen suggestion or contact message submitted on the Merha Village portal.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Full name of the person submitting the suggestion"
+        },
+        "contact": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120,
+          "description": "Phone number or email address"
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120,
+          "description": "Category or subject of the suggestion"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2000,
+          "description": "Suggestion or message body"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when suggestion was submitted"
+        }
+      },
+      "required": ["name", "contact", "topic", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/village_portal/{docId}": {
+      "schema": {
+        "$ref": "#/entities/VillagePortalConfig"
+      },
+      "description": "Stores the live public content configuration for Merha Village (singleton document 'main')."
+    },
+    "/contact_suggestions/{suggestionId}": {
+      "schema": {
+        "$ref": "#/entities/ContactSuggestion"
+      },
+      "description": "Stores citizen suggestions and contact messages submitted from the website."
+    }
+  }
+}

@@ -3,10 +3,21 @@ import { motion } from 'motion/react';
 import { ArrowDownRight, Images, Compass } from 'lucide-react';
 import { useVillage } from '../context/VillageContext';
 import { ResilientImage } from './ResilientImage';
+import { EditableText } from './EditableText';
 
 export const HeroSection: React.FC = () => {
-  const { data } = useVillage();
+  const { data, updateData } = useVillage();
   const { identity } = data;
+
+  const updateIdentity = (key: keyof typeof identity, val: string) => {
+    updateData({
+      ...data,
+      identity: {
+        ...identity,
+        [key]: val,
+      },
+    });
+  };
 
   return (
     <section
@@ -22,7 +33,6 @@ export const HeroSection: React.FC = () => {
           className="w-full h-full object-cover object-center scale-[1.02] transition-transform duration-1000"
           containerClassName="w-full h-full"
         />
-        {/* Measured contrast scrim ensuring WCAG AA readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#071318] via-[#071318]/75 to-[#071318]/35" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#071318]/90 via-[#071318]/50 to-transparent" />
       </div>
@@ -48,31 +58,51 @@ export const HeroSection: React.FC = () => {
             </p>
           </div>
 
-          {/* Primary English & Hindi Title */}
-          <h1
+          {/* Primary English & Hindi Title (Inline Editable in /admin) */}
+          <EditableText
+            as="h1"
+            value={identity.nameEn}
+            onChange={(val) => updateIdentity('nameEn', val)}
             className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#F4F1EA] font-display leading-[1.06]"
             style={{ textWrap: 'balance' }}
-          >
-            {identity.nameEn}
-          </h1>
+          />
 
-          <p className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-hindi text-amber-400 font-medium tracking-wide">
-            {identity.fullLocationHi}
-          </p>
-
-          {/* Subtitle / Cultural Motto */}
-          <div className="mt-6 pt-5 border-t border-white/15 inline-block">
-            <p className="text-lg sm:text-xl font-hindi text-stone-100 tracking-wide">
-              “{identity.taglineHi}”
-            </p>
-            <p className="text-xs sm:text-sm text-stone-300/80 mt-1">
-              {identity.taglineEn}
-            </p>
+          <div className="mt-3">
+            <EditableText
+              as="p"
+              value={identity.fullLocationHi}
+              onChange={(val) => updateIdentity('fullLocationHi', val)}
+              className="text-2xl sm:text-3xl lg:text-4xl font-hindi text-amber-400 font-medium tracking-wide"
+            />
           </div>
 
-          <p className="mt-5 text-base sm:text-lg text-stone-200/90 max-w-2xl leading-relaxed">
-            {identity.description}
-          </p>
+          {/* Subtitle / Cultural Motto */}
+          <div className="mt-6 pt-5 border-t border-white/15 inline-block w-full max-w-xl">
+            <EditableText
+              as="p"
+              value={identity.taglineHi}
+              onChange={(val) => updateIdentity('taglineHi', val)}
+              className="text-lg sm:text-xl font-hindi text-stone-100 tracking-wide"
+            />
+            <div className="mt-1">
+              <EditableText
+                as="p"
+                value={identity.taglineEn}
+                onChange={(val) => updateIdentity('taglineEn', val)}
+                className="text-xs sm:text-sm text-stone-300/80"
+              />
+            </div>
+          </div>
+
+          <div className="mt-5 max-w-2xl">
+            <EditableText
+              as="p"
+              multiline
+              value={identity.description}
+              onChange={(val) => updateIdentity('description', val)}
+              className="text-base sm:text-lg text-stone-200/90 leading-relaxed"
+            />
+          </div>
 
           {/* Action Buttons */}
           <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3.5">

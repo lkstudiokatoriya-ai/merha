@@ -3,16 +3,20 @@ import { motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { useVillage } from '../context/VillageContext';
 import { ResilientImage } from './ResilientImage';
+import { EditableText } from './EditableText';
 
 export const HighlightsAndPlacesSection: React.FC = () => {
-  const { data } = useVillage();
+  const { data, updateData } = useVillage();
   const { highlights, importantPlaces } = data;
   const [selectedPlaceId, setSelectedPlaceId] = useState<string>(
     importantPlaces[0]?.id || ''
   );
 
-  const activePlace =
-    importantPlaces.find((p) => p.id === selectedPlaceId) || importantPlaces[0];
+  const activePlaceIndex = Math.max(
+    0,
+    importantPlaces.findIndex((p) => p.id === selectedPlaceId)
+  );
+  const activePlace = importantPlaces[activePlaceIndex] || importantPlaces[0];
 
   return (
     <section
@@ -57,22 +61,53 @@ export const HighlightsAndPlacesSection: React.FC = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <span className="absolute bottom-3 left-4 text-[11px] uppercase tracking-wider text-amber-300 font-medium">
-                    {String(index + 1).padStart(2, '0')} &nbsp;·&nbsp; {item.category}
+                    {String(index + 1).padStart(2, '0')} &nbsp;·&nbsp;{' '}
+                    <EditableText
+                      value={item.category}
+                      onChange={(val) => {
+                        const next = [...highlights];
+                        next[index] = { ...item, category: val };
+                        updateData({ ...data, highlights: next });
+                      }}
+                    />
                   </span>
                 </div>
 
                 <div className="p-5">
                   <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="text-xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-                      {item.titleEn}
-                    </h3>
-                    <span className="text-sm font-hindi text-amber-700 dark:text-amber-400 shrink-0">
-                      {item.titleHi}
-                    </span>
+                    <EditableText
+                      as="h3"
+                      value={item.titleEn}
+                      onChange={(val) => {
+                        const next = [...highlights];
+                        next[index] = { ...item, titleEn: val };
+                        updateData({ ...data, highlights: next });
+                      }}
+                      className="text-xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                    />
+                    <EditableText
+                      value={item.titleHi}
+                      onChange={(val) => {
+                        const next = [...highlights];
+                        next[index] = { ...item, titleHi: val };
+                        updateData({ ...data, highlights: next });
+                      }}
+                      className="text-sm font-hindi text-amber-700 dark:text-amber-400 shrink-0"
+                    />
                   </div>
-                  <p className="mt-2.5 text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                    {item.description}
-                  </p>
+                  <div className="mt-2.5">
+                    <EditableText
+                      as="p"
+                      multiline
+                      value={item.description}
+                      onChange={(val) => {
+                        const next = [...highlights];
+                        next[index] = { ...item, description: val };
+                        updateData({ ...data, highlights: next });
+                      }}
+                      className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -124,9 +159,8 @@ export const HighlightsAndPlacesSection: React.FC = () => {
               {importantPlaces.map((place, idx) => {
                 const isSelected = place.id === activePlace?.id;
                 return (
-                  <button
+                  <div
                     key={place.id}
-                    type="button"
                     onClick={() => setSelectedPlaceId(place.id)}
                     className={`w-full text-left p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-4 ${
                       isSelected
@@ -134,21 +168,40 @@ export const HighlightsAndPlacesSection: React.FC = () => {
                         : 'border-stone-200/80 dark:border-white/10 bg-white/70 dark:bg-[#0D1E25]/60 hover:border-amber-500/40'
                     }`}
                   >
-                    <div>
+                    <div className="flex-1">
                       <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
                         <span className="font-mono-tabular">
                           {String(idx + 1).padStart(2, '0')}
                         </span>
                         <span>·</span>
-                        <span>{place.relation}</span>
+                        <EditableText
+                          value={place.relation}
+                          onChange={(val) => {
+                            const next = [...importantPlaces];
+                            next[idx] = { ...place, relation: val };
+                            updateData({ ...data, importantPlaces: next });
+                          }}
+                        />
                       </div>
                       <div className="mt-1 flex items-baseline gap-2.5">
-                        <span className="text-lg font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-                          {place.nameEn}
-                        </span>
-                        <span className="text-sm font-hindi text-amber-700 dark:text-amber-400">
-                          {place.nameHi}
-                        </span>
+                        <EditableText
+                          value={place.nameEn}
+                          onChange={(val) => {
+                            const next = [...importantPlaces];
+                            next[idx] = { ...place, nameEn: val };
+                            updateData({ ...data, importantPlaces: next });
+                          }}
+                          className="text-lg font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                        />
+                        <EditableText
+                          value={place.nameHi}
+                          onChange={(val) => {
+                            const next = [...importantPlaces];
+                            next[idx] = { ...place, nameHi: val };
+                            updateData({ ...data, importantPlaces: next });
+                          }}
+                          className="text-sm font-hindi text-amber-700 dark:text-amber-400"
+                        />
                       </div>
                     </div>
                     <ArrowUpRight
@@ -158,7 +211,7 @@ export const HighlightsAndPlacesSection: React.FC = () => {
                           : 'text-stone-400'
                       }`}
                     />
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -191,9 +244,20 @@ export const HighlightsAndPlacesSection: React.FC = () => {
                     </div>
                   </div>
                   <div className="p-6 sm:p-8">
-                    <p className="text-base sm:text-lg text-stone-700 dark:text-stone-200 leading-relaxed">
-                      {activePlace.description}
-                    </p>
+                    <EditableText
+                      as="p"
+                      multiline
+                      value={activePlace.description}
+                      onChange={(val) => {
+                        const next = [...importantPlaces];
+                        next[activePlaceIndex] = {
+                          ...activePlace,
+                          description: val,
+                        };
+                        updateData({ ...data, importantPlaces: next });
+                      }}
+                      className="text-base sm:text-lg text-stone-700 dark:text-stone-200 leading-relaxed"
+                    />
                     <div className="mt-6 pt-4 border-t border-stone-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-400">
                       <span>Jamdhaha Panchayat · Katoria Block · Banka, Bihar</span>
                       <a
@@ -207,9 +271,9 @@ export const HighlightsAndPlacesSection: React.FC = () => {
                 </div>
               )}
 
-              {/* Compact Quick-Scan Grid of All 7 Places */}
+              {/* Compact Quick-Scan Grid of All Places */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {importantPlaces.map((place) => (
+                {importantPlaces.map((place, pIdx) => (
                   <div
                     key={`card-${place.id}`}
                     onClick={() => setSelectedPlaceId(place.id)}
@@ -223,9 +287,19 @@ export const HighlightsAndPlacesSection: React.FC = () => {
                         {place.nameHi}
                       </span>
                     </div>
-                    <p className="mt-1.5 text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
-                      {place.description}
-                    </p>
+                    <div className="mt-1.5">
+                      <EditableText
+                        as="p"
+                        multiline
+                        value={place.description}
+                        onChange={(val) => {
+                          const next = [...importantPlaces];
+                          next[pIdx] = { ...place, description: val };
+                          updateData({ ...data, importantPlaces: next });
+                        }}
+                        className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

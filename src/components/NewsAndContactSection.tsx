@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Send, CheckCircle2, SlidersHorizontal, PlusCircle } from 'lucide-react';
+import { Send, CheckCircle2 } from 'lucide-react';
 import { useVillage } from '../context/VillageContext';
+import { EditableText } from './EditableText';
 
 export const NewsAndContactSection: React.FC = () => {
-  const { data, addSubmission, submissions, openAdminAt, isAdminAuthenticated } = useVillage();
+  const { data, updateData, addSubmission } = useVillage();
   const { newsUpdates, contactConfig } = data;
 
   const [name, setName] = useState('');
@@ -45,17 +46,12 @@ export const NewsAndContactSection: React.FC = () => {
     if (res.sentToEndpoint) {
       setFeedback({
         type: 'success',
-        text: 'Thank you! Your suggestion has been saved and transmitted to the configured village API endpoint.',
+        text: 'धन्यवाद! Thank you—your message has been recorded in the Merha Village portal.',
       });
     } else if (res.error) {
       setFeedback({
         type: 'info',
-        text: `Saved to local village records. (${res.error})`,
-      });
-    } else {
-      setFeedback({
-        type: 'success',
-        text: 'धन्यवाद! Thank you—your message has been recorded in the village portal.',
+        text: `Saved to village records. (${res.error})`,
       });
     }
   };
@@ -68,32 +64,19 @@ export const NewsAndContactSection: React.FC = () => {
         className="py-20 sm:py-28 border-b border-stone-200 dark:border-white/10"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
-                10 &nbsp;·&nbsp; Community Bulletin & Notices
-              </p>
-              <h2
-                className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-                style={{ textWrap: 'balance' }}
-              >
-                Village News & Updates (ग्राम समाचार एवं सूचनाएं)
-              </h2>
-              <p className="mt-3 text-base text-stone-600 dark:text-stone-300">
-                Stay informed about village development works, school academic sessions, Kurar River bridge maintenance, festivals, and Gram Sabha announcements.
-              </p>
-            </div>
-
-            {isAdminAuthenticated && (
-              <button
-                type="button"
-                onClick={() => openAdminAt('news')}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-medium transition-colors self-start lg:self-auto cursor-pointer whitespace-nowrap"
-              >
-                <PlusCircle className="w-3.5 h-3.5" />
-                <span>Publish / Edit Notice</span>
-              </button>
-            )}
+          <div className="max-w-3xl">
+            <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
+              10 &nbsp;·&nbsp; Community Bulletin & Notices
+            </p>
+            <h2
+              className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+              style={{ textWrap: 'balance' }}
+            >
+              Village News & Updates (ग्राम समाचार एवं सूचनाएं)
+            </h2>
+            <p className="mt-3 text-base text-stone-600 dark:text-stone-300">
+              Stay informed about village development works, school academic sessions, Kurar River bridge maintenance, festivals, and Gram Sabha announcements.
+            </p>
           </div>
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -107,28 +90,74 @@ export const NewsAndContactSection: React.FC = () => {
                 className="p-6 sm:p-7 rounded-2xl border border-stone-200 dark:border-white/10 bg-white dark:bg-[#0D1E25] flex flex-col justify-between hover:border-amber-500/40 transition-colors"
               >
                 <div>
-                  {/* Clean unboxed metadata with typographic separators */}
                   <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
-                    <span className="text-amber-700 dark:text-amber-400 font-medium">
-                      {item.category}
-                    </span>
+                    <EditableText
+                      value={item.category}
+                      onChange={(val) => {
+                        const next = [...newsUpdates];
+                        next[idx] = { ...item, category: val };
+                        updateData({ ...data, newsUpdates: next });
+                      }}
+                      className="text-amber-700 dark:text-amber-400 font-medium"
+                    />
                     <span aria-hidden="true">·</span>
-                    <span>{item.date}</span>
+                    <EditableText
+                      value={item.date}
+                      onChange={(val) => {
+                        const next = [...newsUpdates];
+                        next[idx] = { ...item, date: val };
+                        updateData({ ...data, newsUpdates: next });
+                      }}
+                    />
                     <span aria-hidden="true">·</span>
-                    <span className="text-emerald-700 dark:text-emerald-400">
-                      {item.priority}
-                    </span>
+                    <EditableText
+                      value={item.priority}
+                      onChange={(val) => {
+                        const next = [...newsUpdates];
+                        next[idx] = { ...item, priority: val };
+                        updateData({ ...data, newsUpdates: next });
+                      }}
+                      className="text-emerald-700 dark:text-emerald-400"
+                    />
                   </div>
 
-                  <h3 className="mt-2.5 text-xl sm:text-2xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm font-hindi text-stone-600 dark:text-stone-300 mt-1">
-                    {item.titleHi}
-                  </p>
-                  <p className="mt-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                    {item.summary}
-                  </p>
+                  <div className="mt-2.5">
+                    <EditableText
+                      as="h3"
+                      value={item.title}
+                      onChange={(val) => {
+                        const next = [...newsUpdates];
+                        next[idx] = { ...item, title: val };
+                        updateData({ ...data, newsUpdates: next });
+                      }}
+                      className="text-xl sm:text-2xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                    />
+                  </div>
+                  <div className="mt-1">
+                    <EditableText
+                      as="p"
+                      value={item.titleHi}
+                      onChange={(val) => {
+                        const next = [...newsUpdates];
+                        next[idx] = { ...item, titleHi: val };
+                        updateData({ ...data, newsUpdates: next });
+                      }}
+                      className="text-sm font-hindi text-stone-600 dark:text-stone-300"
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <EditableText
+                      as="p"
+                      multiline
+                      value={item.summary}
+                      onChange={(val) => {
+                        const next = [...newsUpdates];
+                        next[idx] = { ...item, summary: val };
+                        updateData({ ...data, newsUpdates: next });
+                      }}
+                      className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed"
+                    />
+                  </div>
                 </div>
 
                 <div className="mt-5 pt-3 border-t border-stone-100 dark:border-white/5 flex items-center justify-between text-xs text-stone-500 dark:text-stone-400">
@@ -167,35 +196,47 @@ export const NewsAndContactSection: React.FC = () => {
                   <p className="text-xs uppercase tracking-wider text-stone-500 dark:text-stone-400">
                     Village Address
                   </p>
-                  <p className="text-sm font-medium text-stone-900 dark:text-stone-100 mt-1">
-                    {contactConfig.officeAddress}
-                  </p>
+                  <div className="mt-1">
+                    <EditableText
+                      as="p"
+                      multiline
+                      value={contactConfig.officeAddress}
+                      onChange={(val) =>
+                        updateData({
+                          ...data,
+                          contactConfig: {
+                            ...contactConfig,
+                            officeAddress: val,
+                          },
+                        })
+                      }
+                      className="text-sm font-medium text-stone-900 dark:text-stone-100"
+                    />
+                  </div>
                 </div>
 
                 <div className="pt-3 border-t border-stone-100 dark:border-white/5">
                   <p className="text-xs uppercase tracking-wider text-stone-500 dark:text-stone-400">
-                    Submission Architecture (Firebase-Free)
+                    Direct Portal Submission
                   </p>
-                  <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
-                    {contactConfig.helpNote}
-                  </p>
-                </div>
-
-                {isAdminAuthenticated && (
-                  <div className="pt-2 flex items-center justify-between text-xs">
-                    <span className="text-stone-500 dark:text-stone-400">
-                      Saved Suggestions: <strong className="font-mono-tabular text-amber-500">{submissions.length}</strong>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => openAdminAt('submissions')}
-                      className="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400 hover:underline font-medium cursor-pointer"
-                    >
-                      <SlidersHorizontal className="w-3.5 h-3.5" />
-                      <span>Configure Endpoint / View Inbox</span>
-                    </button>
+                  <div className="mt-1">
+                    <EditableText
+                      as="p"
+                      multiline
+                      value={contactConfig.helpNote}
+                      onChange={(val) =>
+                        updateData({
+                          ...data,
+                          contactConfig: {
+                            ...contactConfig,
+                            helpNote: val,
+                          },
+                        })
+                      }
+                      className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed"
+                    />
                   </div>
-                )}
+                </div>
               </div>
             </div>
 
@@ -217,6 +258,7 @@ export const NewsAndContactSection: React.FC = () => {
                       id="contact-name"
                       type="text"
                       required
+                      maxLength={120}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Rajesh Kumar / राजेश कुमार"
@@ -235,6 +277,7 @@ export const NewsAndContactSection: React.FC = () => {
                       id="contact-info"
                       type="text"
                       required
+                      maxLength={120}
                       value={contact}
                       onChange={(e) => setContact(e.target.value)}
                       placeholder="e.g. +91 98XXXXXX00 or email@example.com"
@@ -285,6 +328,7 @@ export const NewsAndContactSection: React.FC = () => {
                     id="contact-message"
                     rows={4}
                     required
+                    maxLength={2000}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Write your suggestion, update, or message for Merha Village..."
@@ -307,7 +351,7 @@ export const NewsAndContactSection: React.FC = () => {
 
                 <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                   <span className="text-xs text-stone-500 dark:text-stone-400">
-                    100% Independent · No Firebase Dependency
+                    Connected to Merha Village Cloud Database
                   </span>
 
                   <button

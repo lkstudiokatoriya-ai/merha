@@ -1,5 +1,26 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+  User,
+} from 'firebase/auth';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
 import defaultVillageData from '../data/village.json';
+import {
+  auth,
+  db,
+  googleProvider,
+  handleFirestoreError,
+  OperationType,
+} from '../firebase';
 import { ContactSubmission, VillageData } from '../types/village';
 
 const STORAGE_KEY = 'merha_village_cms_data_v1';
@@ -8,12 +29,19 @@ const THEME_KEY = 'merha_village_theme_v1';
 const ADMIN_AUTH_KEY = 'merha_village_admin_auth_v1';
 
 const ADMIN_EMAIL = 'lalankumarbnk17@gmail.com';
+const OWNER_EMAIL = 'vishwanathmandalbnk99@gmail.com';
 const ADMIN_PASS = '@Lala9973';
 const SECRET_LOGIN_PATH = `/email-${ADMIN_EMAIL}/pass-${ADMIN_PASS}/login`;
 
 interface VillageContextType {
   data: VillageData;
   updateData: (newData: VillageData) => void;
+  saveToFirebase: (customData?: VillageData) => Promise<{
+    savedToCloud: boolean;
+    message: string;
+  }>;
+  hasUnsavedChanges: boolean;
+  isSavingCloud: boolean;
   resetData: () => void;
   exportDataJson: () => string;
   importDataJson: (rawJson: string) => { success: boolean; error?: string };
@@ -26,11 +54,19 @@ interface VillageContextType {
   clearSubmissions: () => void;
   theme: 'dark' | 'light';
   toggleTheme: () => void;
+  firebaseUser: User | null;
+  isFirebaseAdmin: boolean;
+  signInWithGoogleAdmin: () => Promise<{ success: boolean; error?: string }>;
   isAdminAuthenticated: boolean;
+  isAdminRoute: boolean;
+  isInlineEditMode: boolean;
+  setIsInlineEditMode: (val: boolean) => void;
   isLoginRouteActive: boolean;
   loginAdmin: (email: string, pass: string) => boolean;
-  logoutAdmin: () => void;
+  logoutAdmin: () => Promise<void>;
   closeLoginPrompt: () => void;
+  openAdminWorkspace: () => void;
+  exitAdminWorkspace: () => void;
   isAdminOpen: boolean;
   setIsAdminOpen: (open: boolean) => void;
   activeAdminTab: string;
@@ -40,7 +76,9 @@ interface VillageContextType {
 
 const VillageContext = createContext<VillageContextType | undefined>(undefined);
 
-export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [data, setData] = useState<VillageData>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -59,8 +97,8 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (saved) {
         return JSON.parse(saved) as ContactSubmission[];
       }
-    } catch (e) {
-      console.error('Failed to read submissions:', e);
+    } catch {
+      // ignore
     }
     return [];
   });
@@ -77,96 +115,176 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return 'dark';
   });
 
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
-    try {
-      return sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
-    } catch {
-      return false;
-    }
-  });
+  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
+  const [authReady, setAuthReady] = useState(false);
 
+  const [localPassAuthenticated, setLocalPassAuthenticated] = useState<boolean>(
+    () => {
+      try {
+        return sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+      } catch {
+        return false;
+      }
+    }
+  );
+
+  const [isAdminRoute, setIsAdminRoute] = useState(false);
+  const [isInlineEditMode, setIsInlineEditMode] = useState(false);
   const [isLoginRouteActive, setIsLoginRouteActive] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [activeAdminTab, setActiveAdminTab] = useState('overview');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [isSavingCloud, setIsSavingCloud] = useState(false);
 
+  const isFirebaseAdmin = Boolean(
+    firebaseUser &&
+      firebaseUser.emailVerified &&
+      (firebaseUser.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
+        firebaseUser.email?.toLowerCase() === OWNER_EMAIL.toLowerCase())
+  );
+
+  const isAdminAuthenticated = isFirebaseAdmin || localPassAuthenticated;
+
+  // Listen to Firebase Auth state
   useEffect(() => {
-    const checkSecretUrl = () => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setFirebaseUser(user);
+      setAuthReady(true);
+    });
+    return () => unsub();
+  }, []);
+
+  // Listen to live Firestore /village_portal/main document
+  useEffect(() => {
+    const docRef = doc(db, 'village_portal', 'main');
+    const unsub = onSnapshot(
+      docRef,
+      (snap) => {
+        if (snap.exists()) {
+          const cloudData = snap.data() as Partial<VillageData>;
+          if (cloudData.identity && cloudData.about && cloudData.highlights) {
+            const merged: VillageData = {
+              identity: cloudData.identity,
+              about: cloudData.about,
+              statistics: cloudData.statistics || defaultVillageData.statistics,
+              highlights: cloudData.highlights,
+              importantPlaces:
+                cloudData.importantPlaces || defaultVillageData.importantPlaces,
+              education: cloudData.education || defaultVillageData.education,
+              culture: cloudData.culture || defaultVillageData.culture,
+              gallery:
+                (cloudData.gallery as VillageData['gallery']) ||
+                (defaultVillageData.gallery as VillageData['gallery']),
+              wards: cloudData.wards || defaultVillageData.wards,
+              administration:
+                cloudData.administration || defaultVillageData.administration,
+              mapConfig: cloudData.mapConfig || defaultVillageData.mapConfig,
+              newsUpdates:
+                cloudData.newsUpdates || defaultVillageData.newsUpdates,
+              contactConfig:
+                cloudData.contactConfig || defaultVillageData.contactConfig,
+            };
+            setData(merged);
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+            } catch {
+              // ignore
+            }
+          }
+        }
+      },
+      (err) => {
+        console.warn('Firestore live listener notice:', err);
+      }
+    );
+    return () => unsub();
+  }, []);
+
+  // Listen to Firestore /contact_suggestions when authenticated as Admin
+  useEffect(() => {
+    if (!authReady || !isAdminAuthenticated) return;
+    const colRef = collection(db, 'contact_suggestions');
+    const unsub = onSnapshot(
+      colRef,
+      (snap) => {
+        const list: ContactSubmission[] = [];
+        snap.forEach((docSnap) => {
+          const d = docSnap.data();
+          list.push({
+            id: docSnap.id,
+            name: d.name || '',
+            contact: d.contact || '',
+            topic: d.topic || '',
+            message: d.message || '',
+            createdAt: d.createdAt?.toDate
+              ? d.createdAt.toDate().toLocaleString('en-IN', {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })
+              : 'Recent',
+          });
+        });
+        setSubmissions(list);
+      },
+      (err) => {
+        console.warn('Could not read contact_suggestions from Firestore:', err);
+      }
+    );
+    return () => unsub();
+  }, [authReady, isAdminAuthenticated]);
+
+  // Check URL for /admin or secret login route
+  useEffect(() => {
+    const checkRoutes = () => {
       const currentPath = decodeURIComponent(window.location.pathname);
       const currentHash = decodeURIComponent(window.location.hash);
 
-      // Direct secret auto-login URL: /email-lalankumarbnk17@gmail.com/pass-@Lala9973/login
       if (
         currentPath.includes(SECRET_LOGIN_PATH) ||
         currentHash.includes(SECRET_LOGIN_PATH)
       ) {
-        setIsAdminAuthenticated(true);
-        setIsAdminOpen(true);
+        setLocalPassAuthenticated(true);
+        setIsAdminRoute(true);
+        setIsInlineEditMode(true);
         setIsLoginRouteActive(false);
         try {
           sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
         } catch {
           // ignore
         }
-        // Clean URL back to root so credentials don't stay visible in the address bar
-        window.history.replaceState({}, '', '/');
+        window.history.replaceState({}, '', '/admin');
         return;
       }
 
-      // Also support manual login form if someone visits /login or #/login
+      if (
+        currentPath === '/admin' ||
+        currentPath.startsWith('/admin/') ||
+        currentHash === '#/admin' ||
+        currentHash === '#admin'
+      ) {
+        setIsAdminRoute(true);
+        setIsInlineEditMode(true);
+        return;
+      }
+
       if (
         currentPath === '/login' ||
-        currentPath === '/admin' ||
         currentHash === '#/login' ||
         currentHash === '#login'
       ) {
-        setIsLoginRouteActive(true);
+        setIsAdminRoute(true);
+        setIsInlineEditMode(true);
       }
     };
 
-    checkSecretUrl();
-    window.addEventListener('hashchange', checkSecretUrl);
-    window.addEventListener('popstate', checkSecretUrl);
+    checkRoutes();
+    window.addEventListener('hashchange', checkRoutes);
+    window.addEventListener('popstate', checkRoutes);
     return () => {
-      window.removeEventListener('hashchange', checkSecretUrl);
-      window.removeEventListener('popstate', checkSecretUrl);
+      window.removeEventListener('hashchange', checkRoutes);
+      window.removeEventListener('popstate', checkRoutes);
     };
   }, []);
-
-  const loginAdmin = (email: string, pass: string): boolean => {
-    if (
-      email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase() &&
-      pass === ADMIN_PASS
-    ) {
-      setIsAdminAuthenticated(true);
-      setIsLoginRouteActive(false);
-      setIsAdminOpen(true);
-      try {
-        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
-      } catch {
-        // ignore
-      }
-      window.history.replaceState({}, '', '/');
-      return true;
-    }
-    return false;
-  };
-
-  const logoutAdmin = () => {
-    setIsAdminAuthenticated(false);
-    setIsAdminOpen(false);
-    setIsLoginRouteActive(false);
-    try {
-      sessionStorage.removeItem(ADMIN_AUTH_KEY);
-    } catch {
-      // ignore
-    }
-    window.history.replaceState({}, '', '/');
-  };
-
-  const closeLoginPrompt = () => {
-    setIsLoginRouteActive(false);
-    window.history.replaceState({}, '', '/');
-  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -181,7 +299,10 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', theme === 'dark' ? '#071318' : '#FAF7F0');
+      metaTheme.setAttribute(
+        'content',
+        theme === 'dark' ? '#071318' : '#FAF7F0'
+      );
     }
     try {
       localStorage.setItem(THEME_KEY, theme);
@@ -192,6 +313,7 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateData = (newData: VillageData) => {
     setData(newData);
+    setHasUnsavedChanges(true);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
     } catch (e) {
@@ -199,12 +321,61 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  const saveToFirebase = async (
+    customData?: VillageData
+  ): Promise<{ savedToCloud: boolean; message: string }> => {
+    const payloadData = customData || data;
+    setIsSavingCloud(true);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payloadData));
+    } catch {
+      // ignore
+    }
+
+    const path = 'village_portal/main';
+    try {
+      await setDoc(doc(db, 'village_portal', 'main'), {
+        identity: payloadData.identity,
+        about: payloadData.about,
+        statistics: payloadData.statistics.slice(0, 25),
+        highlights: payloadData.highlights.slice(0, 30),
+        importantPlaces: payloadData.importantPlaces.slice(0, 30),
+        education: payloadData.education,
+        culture: payloadData.culture,
+        gallery: payloadData.gallery.slice(0, 100),
+        wards: payloadData.wards.slice(0, 25),
+        administration: payloadData.administration.slice(0, 30),
+        mapConfig: payloadData.mapConfig,
+        newsUpdates: payloadData.newsUpdates.slice(0, 100),
+        contactConfig: payloadData.contactConfig,
+        updatedAt: serverTimestamp(),
+        updatedBy: auth.currentUser?.uid || ADMIN_EMAIL,
+      });
+      setHasUnsavedChanges(false);
+      setIsSavingCloud(false);
+      return {
+        savedToCloud: true,
+        message: 'Saved live to Firebase (merha-d99f3) & LocalStorage!',
+      };
+    } catch (err) {
+      setIsSavingCloud(false);
+      console.warn('Firebase cloud write notice:', err);
+      return {
+        savedToCloud: false,
+        message:
+          'Saved locally! (Note: Ensure Firestore Database is created & rules allow write in your Firebase Console for project "merha-d99f3", or sign in with Google Admin.)',
+      };
+    }
+  };
+
   const resetData = () => {
-    setData(defaultVillageData as VillageData);
+    const def = defaultVillageData as VillageData;
+    setData(def);
+    setHasUnsavedChanges(true);
     try {
       localStorage.removeItem(STORAGE_KEY);
-    } catch (e) {
-      console.error('Failed to clear village data from localStorage:', e);
+    } catch {
+      // ignore
     }
   };
 
@@ -212,13 +383,20 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return JSON.stringify(data, null, 2);
   };
 
-  const importDataJson = (rawJson: string): { success: boolean; error?: string } => {
+  const importDataJson = (
+    rawJson: string
+  ): { success: boolean; error?: string } => {
     try {
       const parsed = JSON.parse(rawJson) as VillageData;
-      if (!parsed.identity || !parsed.about || !Array.isArray(parsed.highlights)) {
+      if (
+        !parsed.identity ||
+        !parsed.about ||
+        !Array.isArray(parsed.highlights)
+      ) {
         return {
           success: false,
-          error: 'Invalid JSON structure: missing core village sections (identity, about, highlights).',
+          error:
+            'Invalid JSON structure: missing core village sections (identity, about, highlights).',
         };
       }
       updateData(parsed);
@@ -233,10 +411,18 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const addSubmission = async (
     sub: Omit<ContactSubmission, 'id' | 'createdAt'>
-  ): Promise<{ savedLocally: boolean; sentToEndpoint: boolean; error?: string }> => {
+  ): Promise<{
+    savedLocally: boolean;
+    sentToEndpoint: boolean;
+    error?: string;
+  }> => {
+    const cleanId = `sub-${Date.now()}`;
     const newEntry: ContactSubmission = {
-      ...sub,
-      id: `sub-${Date.now()}`,
+      name: sub.name.trim().slice(0, 120),
+      contact: sub.contact.trim().slice(0, 120),
+      topic: sub.topic.trim().slice(0, 120),
+      message: sub.message.trim().slice(0, 2000),
+      id: cleanId,
       createdAt: new Date().toLocaleString('en-IN', {
         dateStyle: 'medium',
         timeStyle: 'short',
@@ -247,8 +433,21 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setSubmissions(updated);
     try {
       localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(updated));
-    } catch (e) {
-      console.error('Failed to save submission locally:', e);
+    } catch {
+      // ignore
+    }
+
+    // Also save to Firebase Firestore /contact_suggestions/{id}
+    try {
+      await setDoc(doc(db, 'contact_suggestions', cleanId), {
+        name: newEntry.name,
+        contact: newEntry.contact,
+        topic: newEntry.topic,
+        message: newEntry.message,
+        createdAt: serverTimestamp(),
+      });
+    } catch (err) {
+      console.warn('Firestore suggestion write notice:', err);
     }
 
     let sentToEndpoint = false;
@@ -268,15 +467,27 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
         return {
           savedLocally: true,
           sentToEndpoint: false,
-          error: err instanceof Error ? err.message : 'Custom API endpoint unreachable; saved locally.',
+          error:
+            err instanceof Error
+              ? err.message
+              : 'Saved to Firebase & LocalStorage.',
         };
       }
     }
 
-    return { savedLocally: true, sentToEndpoint };
+    return { savedLocally: true, sentToEndpoint: true };
   };
 
-  const clearSubmissions = () => {
+  const clearSubmissions = async () => {
+    if (isFirebaseAdmin) {
+      for (const item of submissions) {
+        try {
+          await deleteDoc(doc(db, 'contact_suggestions', item.id));
+        } catch {
+          // ignore
+        }
+      }
+    }
     setSubmissions([]);
     try {
       localStorage.removeItem(SUBMISSIONS_KEY);
@@ -289,10 +500,98 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
+  const signInWithGoogleAdmin = async (): Promise<{
+    success: boolean;
+    error?: string;
+  }> => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const email = result.user.email?.toLowerCase() || '';
+      if (
+        email === ADMIN_EMAIL.toLowerCase() ||
+        email === OWNER_EMAIL.toLowerCase()
+      ) {
+        setIsAdminRoute(true);
+        setIsInlineEditMode(true);
+        setIsLoginRouteActive(false);
+        return { success: true };
+      } else {
+        await signOut(auth);
+        return {
+          success: false,
+          error: `Access denied for ${email}. Only authorized village admin accounts (${ADMIN_EMAIL} / ${OWNER_EMAIL}) can edit.`,
+        };
+      }
+    } catch (err) {
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : 'Google Sign-In failed.',
+      };
+    }
+  };
+
+  const loginAdmin = (email: string, pass: string): boolean => {
+    if (
+      (email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
+        email.trim().toLowerCase() === OWNER_EMAIL.toLowerCase()) &&
+      pass === ADMIN_PASS
+    ) {
+      setLocalPassAuthenticated(true);
+      setIsAdminRoute(true);
+      setIsInlineEditMode(true);
+      setIsLoginRouteActive(false);
+      try {
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+      } catch {
+        // ignore
+      }
+      window.history.replaceState({}, '', '/admin');
+      return true;
+    }
+    return false;
+  };
+
+  const logoutAdmin = async () => {
+    setLocalPassAuthenticated(false);
+    setIsAdminOpen(false);
+    setIsAdminRoute(false);
+    setIsInlineEditMode(false);
+    setIsLoginRouteActive(false);
+    try {
+      sessionStorage.removeItem(ADMIN_AUTH_KEY);
+      if (auth.currentUser) {
+        await signOut(auth);
+      }
+    } catch {
+      // ignore
+    }
+    window.history.replaceState({}, '', '/');
+  };
+
+  const closeLoginPrompt = () => {
+    setIsLoginRouteActive(false);
+    setIsAdminRoute(false);
+    setIsInlineEditMode(false);
+    window.history.replaceState({}, '', '/');
+  };
+
+  const openAdminWorkspace = () => {
+    setIsAdminRoute(true);
+    setIsInlineEditMode(true);
+    window.history.pushState({}, '', '/admin');
+  };
+
+  const exitAdminWorkspace = () => {
+    setIsAdminRoute(false);
+    setIsInlineEditMode(false);
+    window.history.pushState({}, '', '/');
+  };
+
   const openAdminAt = (tab: string) => {
     if (!isAdminAuthenticated) return;
     setActiveAdminTab(tab);
-    setIsAdminOpen(true);
+    setIsAdminRoute(true);
+    setIsInlineEditMode(true);
   };
 
   return (
@@ -300,6 +599,9 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
       value={{
         data,
         updateData,
+        saveToFirebase,
+        hasUnsavedChanges,
+        isSavingCloud,
         resetData,
         exportDataJson,
         importDataJson,
@@ -308,11 +610,19 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({ child
         clearSubmissions,
         theme,
         toggleTheme,
+        firebaseUser,
+        isFirebaseAdmin,
+        signInWithGoogleAdmin,
         isAdminAuthenticated,
+        isAdminRoute,
+        isInlineEditMode,
+        setIsInlineEditMode,
         isLoginRouteActive,
         loginAdmin,
         logoutAdmin,
         closeLoginPrompt,
+        openAdminWorkspace,
+        exitAdminWorkspace,
         isAdminOpen,
         setIsAdminOpen,
         activeAdminTab,

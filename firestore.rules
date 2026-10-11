@@ -1,0 +1,160 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedAdminEmail() {
+      return isSignedIn()
+        && request.auth.token.email_verified == true
+        && (
+          request.auth.token.email == 'vishwanathmandalbnk99@gmail.com'
+          || request.auth.token.email == 'lalankumarbnk17@gmail.com'
+        );
+    }
+
+    function isAdmin() {
+      return isVerifiedAdminEmail()
+        || (isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+
+    function isValidVillagePortalConfig(data) {
+      return data.keys().hasAll([
+          'identity',
+          'about',
+          'statistics',
+          'highlights',
+          'importantPlaces',
+          'education',
+          'culture',
+          'gallery',
+          'wards',
+          'administration',
+          'mapConfig',
+          'newsUpdates',
+          'contactConfig',
+          'updatedAt',
+          'updatedBy'
+        ])
+        && data.keys().hasOnly([
+          'identity',
+          'about',
+          'statistics',
+          'highlights',
+          'importantPlaces',
+          'education',
+          'culture',
+          'gallery',
+          'wards',
+          'administration',
+          'mapConfig',
+          'newsUpdates',
+          'contactConfig',
+          'updatedAt',
+          'updatedBy'
+        ])
+        && data.identity is map && data.identity.size() <= 20
+        && data.about is map && data.about.size() <= 20
+        && data.statistics is list && data.statistics.size() <= 25
+        && (data.statistics.size() == 0 || data.statistics[0] is map)
+        && data.highlights is list && data.highlights.size() <= 30
+        && (data.highlights.size() == 0 || data.highlights[0] is map)
+        && data.importantPlaces is list && data.importantPlaces.size() <= 30
+        && (data.importantPlaces.size() == 0 || data.importantPlaces[0] is map)
+        && data.education is map && data.education.size() <= 20
+        && data.culture is map && data.culture.size() <= 20
+        && data.gallery is list && data.gallery.size() <= 100
+        && (data.gallery.size() == 0 || data.gallery[0] is map)
+        && data.wards is list && data.wards.size() <= 25
+        && (data.wards.size() == 0 || data.wards[0] is map)
+        && data.administration is list && data.administration.size() <= 30
+        && (data.administration.size() == 0 || data.administration[0] is map)
+        && data.mapConfig is map && data.mapConfig.size() <= 20
+        && data.newsUpdates is list && data.newsUpdates.size() <= 100
+        && (data.newsUpdates.size() == 0 || data.newsUpdates[0] is map)
+        && data.contactConfig is map && data.contactConfig.size() <= 20
+        && data.updatedAt == request.time
+        && data.updatedBy is string
+        && data.updatedBy.size() >= 1
+        && data.updatedBy.size() <= 128
+        && data.updatedBy == request.auth.uid;
+    }
+
+    function isValidContactSuggestion(data) {
+      return data.keys().hasAll(['name', 'contact', 'topic', 'message', 'createdAt'])
+        && data.keys().hasOnly(['name', 'contact', 'topic', 'message', 'createdAt'])
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 120
+        && data.contact is string && data.contact.size() >= 3 && data.contact.size() <= 120
+        && data.topic is string && data.topic.size() >= 2 && data.topic.size() <= 120
+        && data.message is string && data.message.size() >= 2 && data.message.size() <= 2000
+        && data.createdAt == request.time;
+    }
+
+    // Admin registry lookup collection (read-only for self/admin)
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && isValidId(adminId) && request.auth.uid == adminId;
+      allow list, create, update, delete: if false;
+    }
+
+    // Public Village Portal Singleton Content Document
+    match /village_portal/{docId} {
+      allow get: if isValidId(docId) && docId == 'main';
+      allow list: if false;
+      allow create: if isSignedIn()
+        && isValidId(docId)
+        && docId == 'main'
+        && isValidVillagePortalConfig(incoming())
+        && isAdmin();
+      allow update: if isSignedIn()
+        && isValidId(docId)
+        && docId == 'main'
+        && isValidVillagePortalConfig(incoming())
+        && isAdmin()
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'identity',
+          'about',
+          'statistics',
+          'highlights',
+          'importantPlaces',
+          'education',
+          'culture',
+          'gallery',
+          'wards',
+          'administration',
+          'mapConfig',
+          'newsUpdates',
+          'contactConfig',
+          'updatedAt',
+          'updatedBy'
+        ]);
+      allow delete: if false;
+    }
+
+    // Citizen Contact Suggestions (Public Create, Strict Admin Read/Delete)
+    match /contact_suggestions/{suggestionId} {
+      allow create: if isValidId(suggestionId) && isValidContactSuggestion(incoming());
+      allow get: if isSignedIn() && isValidId(suggestionId) && isAdmin();
+      allow list: if isSignedIn() && isAdmin() && existing().name is string;
+      allow update: if false;
+      allow delete: if isSignedIn() && isValidId(suggestionId) && isAdmin();
+    }
+  }
+}

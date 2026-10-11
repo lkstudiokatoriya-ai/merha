@@ -32,7 +32,7 @@ const ALL_MOBILE_NAV = [
 ];
 
 export const Navbar: React.FC = () => {
-  const { theme, toggleTheme, openAdminAt, isAdminAuthenticated, logoutAdmin } = useVillage();
+  const { theme, toggleTheme, openAdminWorkspace, isAdminAuthenticated, logoutAdmin } = useVillage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -138,11 +138,11 @@ export const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => openAdminAt('overview')}
+                onClick={openAdminWorkspace}
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-lg bg-amber-600 hover:bg-amber-500 text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />
-                <span>Admin Panel</span>
+                <span>/admin Studio</span>
               </button>
               <button
                 type="button"
@@ -192,7 +192,7 @@ export const Navbar: React.FC = () => {
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    openAdminAt('overview');
+                    openAdminWorkspace();
                   }}
                   className="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-medium rounded-lg bg-amber-600 text-white hover:bg-amber-500 transition-colors cursor-pointer"
                 >

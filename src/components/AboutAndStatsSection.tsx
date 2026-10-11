@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { SlidersHorizontal } from 'lucide-react';
 import { useVillage } from '../context/VillageContext';
+import { EditableText } from './EditableText';
 
 export const AboutAndStatsSection: React.FC = () => {
-  const { data, openAdminAt, isAdminAuthenticated } = useVillage();
+  const { data, updateData, isInlineEditMode } = useVillage();
   const { about, statistics } = data;
 
   return (
@@ -25,29 +25,39 @@ export const AboutAndStatsSection: React.FC = () => {
             >
               About Merha Village (मेड़ा गांव का परिचय)
             </h2>
-            <blockquote className="mt-6 pl-4 border-l-2 border-amber-500/70 italic text-base sm:text-lg font-hindi text-stone-700 dark:text-amber-200/90 leading-relaxed">
-              “{about.narrativeQuote}”
-            </blockquote>
+            <div className="mt-6 pl-4 border-l-2 border-amber-500/70">
+              <EditableText
+                as="blockquote"
+                multiline
+                value={about.narrativeQuote}
+                onChange={(val) =>
+                  updateData({
+                    ...data,
+                    about: { ...about, narrativeQuote: val },
+                  })
+                }
+                className="italic text-base sm:text-lg font-hindi text-stone-700 dark:text-amber-200/90 leading-relaxed"
+              />
+            </div>
           </div>
 
           <div className="lg:col-span-7 space-y-4">
-            <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed max-w-2xl">
-              {about.overview}
-            </p>
+            <EditableText
+              as="p"
+              multiline
+              value={about.overview}
+              onChange={(val) =>
+                updateData({
+                  ...data,
+                  about: { ...about, overview: val },
+                })
+              }
+              className="text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed max-w-2xl"
+            />
             <div className="pt-2 flex flex-wrap items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-400">
               <span>
                 Official Administrative Hierarchy &nbsp;·&nbsp; Banka District, Bihar
               </span>
-              {isAdminAuthenticated && (
-                <button
-                  type="button"
-                  onClick={() => openAdminAt('overview')}
-                  className="inline-flex items-center gap-1.5 text-amber-700 dark:text-amber-400 hover:underline font-medium cursor-pointer"
-                >
-                  <SlidersHorizontal className="w-3.5 h-3.5" />
-                  <span>Customize Gazetteer Details</span>
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -65,21 +75,59 @@ export const AboutAndStatsSection: React.FC = () => {
             >
               <div>
                 <div className="flex items-center justify-between gap-2 text-xs text-stone-500 dark:text-stone-400">
-                  <span className="uppercase tracking-wider font-medium">{fact.labelEn}</span>
-                  <span className="font-hindi text-amber-700 dark:text-amber-400">{fact.labelHi}</span>
+                  <EditableText
+                    value={fact.labelEn}
+                    onChange={(val) => {
+                      const next = [...about.facts];
+                      next[idx] = { ...fact, labelEn: val };
+                      updateData({ ...data, about: { ...about, facts: next } });
+                    }}
+                    className="uppercase tracking-wider font-medium"
+                  />
+                  <EditableText
+                    value={fact.labelHi}
+                    onChange={(val) => {
+                      const next = [...about.facts];
+                      next[idx] = { ...fact, labelHi: val };
+                      updateData({ ...data, about: { ...about, facts: next } });
+                    }}
+                    className="font-hindi text-amber-700 dark:text-amber-400"
+                  />
                 </div>
                 <div className="mt-3 flex items-baseline justify-between gap-3">
-                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-                    {fact.valueEn}
-                  </h3>
-                  <span className="text-lg sm:text-xl font-hindi text-stone-700 dark:text-stone-200">
-                    {fact.valueHi}
-                  </span>
+                  <EditableText
+                    as="h3"
+                    value={fact.valueEn}
+                    onChange={(val) => {
+                      const next = [...about.facts];
+                      next[idx] = { ...fact, valueEn: val };
+                      updateData({ ...data, about: { ...about, facts: next } });
+                    }}
+                    className="text-2xl sm:text-3xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                  />
+                  <EditableText
+                    value={fact.valueHi}
+                    onChange={(val) => {
+                      const next = [...about.facts];
+                      next[idx] = { ...fact, valueHi: val };
+                      updateData({ ...data, about: { ...about, facts: next } });
+                    }}
+                    className="text-lg sm:text-xl font-hindi text-stone-700 dark:text-stone-200"
+                  />
                 </div>
               </div>
-              <p className="mt-4 pt-3 border-t border-stone-100 dark:border-white/5 text-xs text-stone-500 dark:text-stone-400">
-                {fact.detail}
-              </p>
+              <div className="mt-4 pt-3 border-t border-stone-100 dark:border-white/5">
+                <EditableText
+                  as="p"
+                  value={fact.detail}
+                  onChange={(val) => {
+                    const next = [...about.facts];
+                    next[idx] = { ...fact, detail: val };
+                    updateData({ ...data, about: { ...about, facts: next } });
+                  }}
+                  className="text-xs text-stone-500 dark:text-stone-400"
+                />
+              </div>
             </motion.div>
           ))}
         </div>
@@ -95,15 +143,6 @@ export const AboutAndStatsSection: React.FC = () => {
                 Merha at a Glance (एक नज़र में मेड़ा गांव)
               </h3>
             </div>
-            {isAdminAuthenticated && (
-              <button
-                type="button"
-                onClick={() => openAdminAt('statistics')}
-                className="text-xs text-amber-700 dark:text-amber-400 hover:underline self-start sm:self-auto cursor-pointer"
-              >
-                Edit Statistical Counters →
-              </button>
-            )}
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -117,22 +156,71 @@ export const AboutAndStatsSection: React.FC = () => {
                 className="p-5 rounded-xl border border-stone-200/80 dark:border-white/10 bg-stone-100/70 dark:bg-white/[0.03]"
               >
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-bold font-mono-tabular text-amber-600 dark:text-amber-400">
-                    {String(stat.value).padStart(2, '0')}
-                  </span>
-                  <span className="text-xs text-emerald-700 dark:text-emerald-400 font-medium">
-                    {stat.suffix}
-                  </span>
+                  {isInlineEditMode ? (
+                    <input
+                      type="number"
+                      value={stat.value}
+                      onChange={(e) => {
+                        const next = [...statistics];
+                        next[idx] = {
+                          ...stat,
+                          value: Number(e.target.value) || 0,
+                        };
+                        updateData({ ...data, statistics: next });
+                      }}
+                      className="w-20 rounded-lg border border-dashed border-amber-400 bg-amber-500/10 px-2 py-0.5 text-2xl font-bold font-mono-tabular text-amber-500"
+                    />
+                  ) : (
+                    <span className="text-3xl sm:text-4xl font-bold font-mono-tabular text-amber-600 dark:text-amber-400">
+                      {String(stat.value).padStart(2, '0')}
+                    </span>
+                  )}
+                  <EditableText
+                    value={stat.suffix}
+                    onChange={(val) => {
+                      const next = [...statistics];
+                      next[idx] = { ...stat, suffix: val };
+                      updateData({ ...data, statistics: next });
+                    }}
+                    className="text-xs text-emerald-700 dark:text-emerald-400 font-medium"
+                  />
                 </div>
-                <p className="mt-2 text-sm font-semibold text-stone-900 dark:text-stone-100">
-                  {stat.label}
-                </p>
-                <p className="text-xs font-hindi text-stone-600 dark:text-stone-300 mt-0.5">
-                  {stat.labelHi}
-                </p>
-                <p className="mt-2 text-[11px] text-stone-500 dark:text-stone-400">
-                  {stat.note}
-                </p>
+                <div className="mt-2">
+                  <EditableText
+                    as="p"
+                    value={stat.label}
+                    onChange={(val) => {
+                      const next = [...statistics];
+                      next[idx] = { ...stat, label: val };
+                      updateData({ ...data, statistics: next });
+                    }}
+                    className="text-sm font-semibold text-stone-900 dark:text-stone-100"
+                  />
+                </div>
+                <div className="mt-0.5">
+                  <EditableText
+                    as="p"
+                    value={stat.labelHi}
+                    onChange={(val) => {
+                      const next = [...statistics];
+                      next[idx] = { ...stat, labelHi: val };
+                      updateData({ ...data, statistics: next });
+                    }}
+                    className="text-xs font-hindi text-stone-600 dark:text-stone-300"
+                  />
+                </div>
+                <div className="mt-2">
+                  <EditableText
+                    as="p"
+                    value={stat.note}
+                    onChange={(val) => {
+                      const next = [...statistics];
+                      next[idx] = { ...stat, note: val };
+                      updateData({ ...data, statistics: next });
+                    }}
+                    className="text-[11px] text-stone-500 dark:text-stone-400"
+                  />
+                </div>
               </motion.div>
             ))}
           </div>
