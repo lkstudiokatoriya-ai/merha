@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
+import { EditableText } from './EditableText';
 
 interface FAQItem {
   questionEn: string;
@@ -87,7 +88,10 @@ export const SEOFaqSection: React.FC = () => {
           <span>Jamdhaha Panchayat (जमदाहा पंचायत)</span>
           <span aria-hidden="true">/</span>
           <strong className="text-amber-700 dark:text-amber-400 font-semibold">
-            Merha Village (मेड़ा गांव)
+            <EditableText
+              labelKey="breadcrumb_village_name"
+              defaultText="Merha Village (मेड़ा गांव)"
+            />
           </strong>
         </nav>
 
@@ -95,19 +99,29 @@ export const SEOFaqSection: React.FC = () => {
           <div className="lg:col-span-5">
             <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
               <Search className="w-3.5 h-3.5" />
-              <span>Quick Directory & Search Guide</span>
+              <EditableText
+                labelKey="faq_kicker"
+                defaultText="Quick Directory & Search Guide"
+              />
             </div>
-            <h2
-              id="faq-heading"
-              className="mt-2 text-3xl sm:text-4xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-              style={{ textWrap: 'balance' }}
-            >
-              Frequently Asked Questions About Merha Village (मेड़ा गांव से जुड़े सामान्य प्रश्न)
-            </h2>
-            <p className="mt-3 text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed">
-              Verified geographic, administrative, and local directory answers for anyone searching for{' '}
-              <strong>Merha Village (मेड़ा गांव), Jamdhaha, Katoria, Banka, Bihar</strong> on Google or other search engines.
-            </p>
+            <div className="mt-2" id="faq-heading">
+              <EditableText
+                as="h2"
+                labelKey="faq_heading"
+                defaultText="Frequently Asked Questions About Merha Village (मेड़ा गांव से जुड़े सामान्य प्रश्न)"
+                className="text-3xl sm:text-4xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                style={{ textWrap: 'balance' }}
+              />
+            </div>
+            <div className="mt-3">
+              <EditableText
+                as="p"
+                multiline
+                labelKey="faq_intro"
+                defaultText="Verified geographic, administrative, and local directory answers for anyone searching for Merha Village (मेड़ा गांव), Jamdhaha, Katoria, Banka, Bihar on Google or other search engines."
+                className="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed"
+              />
+            </div>
           </div>
 
           <div className="lg:col-span-7 space-y-3">
@@ -124,13 +138,21 @@ export const SEOFaqSection: React.FC = () => {
                     aria-expanded={isOpen}
                     className="w-full p-5 text-left flex items-start justify-between gap-4 cursor-pointer"
                   >
-                    <div>
-                      <h3 className="text-base sm:text-lg font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-                        {faq.questionEn}
-                      </h3>
-                      <p className="text-xs sm:text-sm font-hindi text-amber-700 dark:text-amber-400 mt-0.5">
-                        {faq.questionHi}
-                      </p>
+                    <div className="flex-1">
+                      <EditableText
+                        as="h3"
+                        labelKey={`faq_q_en_${idx}`}
+                        defaultText={faq.questionEn}
+                        className="text-base sm:text-lg font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                      />
+                      <div className="mt-0.5">
+                        <EditableText
+                          as="p"
+                          labelKey={`faq_q_hi_${idx}`}
+                          defaultText={faq.questionHi}
+                          className="text-xs sm:text-sm font-hindi text-amber-700 dark:text-amber-400"
+                        />
+                      </div>
                     </div>
                     <ChevronDown
                       className={`w-5 h-5 text-stone-400 shrink-0 mt-1 transition-transform ${
@@ -141,10 +163,19 @@ export const SEOFaqSection: React.FC = () => {
 
                   {isOpen && (
                     <div className="px-5 pb-5 pt-2 border-t border-stone-100 dark:border-white/5 space-y-2 text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                      <p>{faq.answerEn}</p>
-                      <p className="font-hindi text-stone-700 dark:text-stone-200">
-                        {faq.answerHi}
-                      </p>
+                      <EditableText
+                        as="p"
+                        multiline
+                        labelKey={`faq_a_en_${idx}`}
+                        defaultText={faq.answerEn}
+                      />
+                      <EditableText
+                        as="p"
+                        multiline
+                        labelKey={`faq_a_hi_${idx}`}
+                        defaultText={faq.answerHi}
+                        className="font-hindi text-stone-700 dark:text-stone-200"
+                      />
                     </div>
                   )}
                 </div>

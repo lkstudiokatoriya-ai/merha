@@ -53,9 +53,12 @@ export const HeroSection: React.FC = () => {
               referrerPolicy="no-referrer"
               className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-amber-400/60 shadow-xl shadow-black/40 shrink-0"
             />
-            <p className="text-xs sm:text-sm tracking-widest uppercase text-amber-300/95 font-medium leading-relaxed">
-              Jamdhaha Panchayat &nbsp;·&nbsp; Katoria Block &nbsp;·&nbsp; Banka District &nbsp;·&nbsp; Bihar
-            </p>
+            <EditableText
+              as="p"
+              labelKey="hero_admin_line"
+              defaultText="Jamdhaha Panchayat · Katoria Block · Banka District · Bihar"
+              className="text-xs sm:text-sm tracking-widest uppercase text-amber-300/95 font-medium leading-relaxed"
+            />
           </div>
 
           {/* Primary English & Hindi Title (Inline Editable in /admin) */}
@@ -111,7 +114,10 @@ export const HeroSection: React.FC = () => {
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-semibold text-sm transition-all shadow-lg shadow-amber-500/20 whitespace-nowrap"
             >
               <Compass className="w-4 h-4" />
-              <span>Explore Village</span>
+              <EditableText
+                labelKey="hero_btn_explore"
+                defaultText="Explore Village"
+              />
             </a>
 
             <a
@@ -119,14 +125,20 @@ export const HeroSection: React.FC = () => {
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-white/25 bg-white/10 hover:bg-white/15 backdrop-blur-md text-[#F4F1EA] font-medium text-sm transition-all whitespace-nowrap"
             >
               <Images className="w-4 h-4 text-amber-300" />
-              <span>Village Gallery</span>
+              <EditableText
+                labelKey="hero_btn_gallery"
+                defaultText="Village Gallery"
+              />
             </a>
 
             <a
               href="#about"
               className="inline-flex items-center gap-1.5 px-5 py-3.5 rounded-xl border border-transparent hover:border-white/15 text-stone-200 hover:text-amber-300 font-medium text-sm transition-colors whitespace-nowrap"
             >
-              <span>About Merha</span>
+              <EditableText
+                labelKey="hero_btn_about"
+                defaultText="About Merha"
+              />
               <ArrowDownRight className="w-4 h-4" />
             </a>
           </div>
@@ -140,28 +152,68 @@ export const HeroSection: React.FC = () => {
           className="mt-14 pt-6 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-6 text-left"
         >
           <div>
-            <p className="text-xs uppercase tracking-wider text-stone-400">Primary River</p>
-            <p className="text-sm sm:text-base font-medium text-stone-100 mt-0.5">
-              Kurar River (कुरार नदी)
-            </p>
+            <EditableText
+              as="p"
+              labelKey="hero_strip_1_label"
+              defaultText="Primary River"
+              className="text-xs uppercase tracking-wider text-stone-400"
+            />
+            <div className="mt-0.5">
+              <EditableText
+                as="p"
+                labelKey="hero_strip_1_val"
+                defaultText="Kurar River (कुरार नदी)"
+                className="text-sm sm:text-base font-medium text-stone-100"
+              />
+            </div>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-stone-400">Geography</p>
-            <p className="text-sm sm:text-base font-medium text-stone-100 mt-0.5">
-              Hills, Sal Forest & Green Fields
-            </p>
+            <EditableText
+              as="p"
+              labelKey="hero_strip_2_label"
+              defaultText="Geography"
+              className="text-xs uppercase tracking-wider text-stone-400"
+            />
+            <div className="mt-0.5">
+              <EditableText
+                as="p"
+                labelKey="hero_strip_2_val"
+                defaultText="Hills, Sal Forest & Green Fields"
+                className="text-sm sm:text-base font-medium text-stone-100"
+              />
+            </div>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-stone-400">Gram Panchayat</p>
-            <p className="text-sm sm:text-base font-medium text-stone-100 mt-0.5">
-              Jamdhaha (जमदाहा)
-            </p>
+            <EditableText
+              as="p"
+              labelKey="hero_strip_3_label"
+              defaultText="Gram Panchayat"
+              className="text-xs uppercase tracking-wider text-stone-400"
+            />
+            <div className="mt-0.5">
+              <EditableText
+                as="p"
+                labelKey="hero_strip_3_val"
+                defaultText="Jamdhaha (जमदाहा)"
+                className="text-sm sm:text-base font-medium text-stone-100"
+              />
+            </div>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-stone-400">Block & District</p>
-            <p className="text-sm sm:text-base font-medium text-stone-100 mt-0.5">
-              Katoria · Banka, Bihar
-            </p>
+            <EditableText
+              as="p"
+              labelKey="hero_strip_4_label"
+              defaultText="Block & District"
+              className="text-xs uppercase tracking-wider text-stone-400"
+            />
+            <div className="mt-0.5">
+              <EditableText
+                as="p"
+                labelKey="hero_strip_4_val"
+                defaultText="Katoria · Banka, Bihar"
+                className="text-sm sm:text-base font-medium text-stone-100"
+              />
+            </div>
           </div>
         </motion.div>
       </div>

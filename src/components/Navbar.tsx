@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Menu, X, Sun, Moon, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { useVillage } from '../context/VillageContext';
 import { PWAInstallButton } from './PWAInstallButton';
+import { EditableText } from './EditableText';
 
 const PRIMARY_NAV = [
   { label: 'About', href: '#about' },
@@ -61,7 +62,10 @@ export const Navbar: React.FC = () => {
             referrerPolicy="no-referrer"
             className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-amber-500/40 shadow-sm shrink-0"
           />
-          <span>MERHA VILLAGE</span>
+          <EditableText
+            labelKey="navbar_brand_title"
+            defaultText="MERHA VILLAGE"
+          />
         </a>
 
         {/* Zone 2: Clean Text Navigation Links */}

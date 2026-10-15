@@ -68,9 +68,11 @@ service cloud.firestore {
           'mapConfig',
           'newsUpdates',
           'contactConfig',
+          'uiLabels',
           'updatedAt',
           'updatedBy'
         ])
+        && (!('uiLabels' in data) || (data.uiLabels is map && data.uiLabels.size() <= 300))
         && data.identity is map && data.identity.size() <= 20
         && data.about is map && data.about.size() <= 20
         && data.statistics is list && data.statistics.size() <= 25
@@ -142,6 +144,7 @@ service cloud.firestore {
           'mapConfig',
           'newsUpdates',
           'contactConfig',
+          'uiLabels',
           'updatedAt',
           'updatedBy'
         ]);

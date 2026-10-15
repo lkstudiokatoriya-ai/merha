@@ -21,6 +21,7 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import { storage } from '../firebase';
 import { useVillage } from '../context/VillageContext';
 import { GalleryCategory } from '../types/village';
+import { resolveVillageImageUrl } from './ResilientImage';
 
 // Helper to compress an uploaded image file into a compact DataURL so it fits cleanly inside Firestore (< 1MB doc limit)
 function compressImageFile(file: File, maxWidth = 1000, quality = 0.78): Promise<string> {
@@ -210,7 +211,7 @@ export const AdminSplitStudio: React.FC<{ children: React.ReactNode }> = ({
       description: placeDesc.trim(),
       image:
         placeImage.trim() ||
-        '/src/assets/images/merha_hero_landscape_1791458712697.jpg',
+        '/images/merha_hero_landscape_1791458712697.jpg',
       featured: false,
     };
     updateData({
@@ -437,7 +438,7 @@ export const AdminSplitStudio: React.FC<{ children: React.ReactNode }> = ({
             <span className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               <span>
-                LIVE WEBSITE TEXT EDITOR — Click on any dashed text box below to edit directly on the website, then click "Save Changes"
+                LIVE WEBSITE TEXT EDITOR — Click any text on the website to remove (✕), replace, or write more text before/after, then click "Save Changes"
               </span>
             </span>
           </div>
@@ -556,6 +557,12 @@ export const AdminSplitStudio: React.FC<{ children: React.ReactNode }> = ({
                   <h3 className="text-xs uppercase tracking-wider text-amber-400 font-semibold">
                     Hero Background Image
                   </h3>
+                  <img
+                    src={resolveVillageImageUrl(data.identity.heroImage)}
+                    alt="Hero Background Preview"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-28 rounded-lg object-cover border border-white/10"
+                  />
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -697,7 +704,7 @@ export const AdminSplitStudio: React.FC<{ children: React.ReactNode }> = ({
                       className="p-3 rounded-xl border border-white/10 bg-[#0D1E25] flex items-center gap-3"
                     >
                       <img
-                        src={item.image}
+                        src={resolveVillageImageUrl(item.image)}
                         alt={item.title}
                         referrerPolicy="no-referrer"
                         className="w-14 h-14 rounded-lg object-cover shrink-0 border border-white/10"
@@ -923,7 +930,7 @@ export const AdminSplitStudio: React.FC<{ children: React.ReactNode }> = ({
                       className="p-3 rounded-xl border border-white/10 bg-[#0D1E25] flex items-center gap-3"
                     >
                       <img
-                        src={hl.image}
+                        src={resolveVillageImageUrl(hl.image)}
                         alt={hl.titleEn}
                         referrerPolicy="no-referrer"
                         className="w-11 h-11 rounded-lg object-cover shrink-0"

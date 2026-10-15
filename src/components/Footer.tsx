@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUp, SlidersHorizontal, WifiOff } from 'lucide-react';
 import { useVillage } from '../context/VillageContext';
 import { PWAInstallButton } from './PWAInstallButton';
+import { EditableText } from './EditableText';
 
 export const Footer: React.FC = () => {
-  const { data, openAdminAt, isAdminAuthenticated } = useVillage();
+  const { data, updateData, openAdminAt, isAdminAuthenticated } = useVillage();
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [isOnline, setIsOnline] = useState(
     typeof navigator !== 'undefined' ? navigator.onLine : true
@@ -38,10 +39,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-stone-200 dark:border-white/10">
           {/* Col 1: Brand & Identity */}
           <div className="md:col-span-5 space-y-3">
-            <a
-              href="#home"
-              className="inline-flex items-center gap-3 text-2xl font-bold font-display text-stone-900 dark:text-[#F4F1EA] tracking-tight"
-            >
+            <div className="inline-flex items-center gap-3 text-2xl font-bold font-display text-stone-900 dark:text-[#F4F1EA] tracking-tight">
               <img
                 src="/Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png"
                 alt="Merha Village Official Logo"
@@ -49,15 +47,55 @@ export const Footer: React.FC = () => {
                 className="w-11 h-11 rounded-full object-cover border border-amber-500/40 shadow-sm shrink-0"
               />
               <span>
-                MERHA VILLAGE &nbsp;·&nbsp; <span className="font-hindi text-amber-600 dark:text-amber-400">मेड़ा गांव</span>
+                <EditableText
+                  value={data.identity.nameEn}
+                  onChange={(val) =>
+                    updateData({
+                      ...data,
+                      identity: { ...data.identity, nameEn: val },
+                    })
+                  }
+                />{' '}
+                &nbsp;·&nbsp;{' '}
+                <EditableText
+                  value={data.identity.nameHi}
+                  onChange={(val) =>
+                    updateData({
+                      ...data,
+                      identity: { ...data.identity, nameHi: val },
+                    })
+                  }
+                  className="font-hindi text-amber-600 dark:text-amber-400"
+                />
               </span>
-            </a>
-            <p className="text-sm font-hindi text-stone-600 dark:text-stone-300">
-              “{data.identity.taglineHi}”
-            </p>
-            <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm leading-relaxed">
-              {data.identity.fullLocationEn}
-            </p>
+            </div>
+            <div>
+              <EditableText
+                as="p"
+                value={data.identity.taglineHi}
+                onChange={(val) =>
+                  updateData({
+                    ...data,
+                    identity: { ...data.identity, taglineHi: val },
+                  })
+                }
+                className="text-sm font-hindi text-stone-600 dark:text-stone-300"
+              />
+            </div>
+            <div>
+              <EditableText
+                as="p"
+                multiline
+                value={data.identity.fullLocationEn}
+                onChange={(val) =>
+                  updateData({
+                    ...data,
+                    identity: { ...data.identity, fullLocationEn: val },
+                  })
+                }
+                className="text-xs text-stone-500 dark:text-stone-400 max-w-sm leading-relaxed"
+              />
+            </div>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <PWAInstallButton variant="compact" />
               {isAdminAuthenticated && (
@@ -76,9 +114,12 @@ export const Footer: React.FC = () => {
           {/* Col 2: Quick Navigation */}
           <div className="md:col-span-4 grid grid-cols-2 gap-4 text-xs">
             <div className="space-y-2.5">
-              <p className="uppercase tracking-wider text-stone-400 font-semibold">
-                Explore
-              </p>
+              <EditableText
+                as="p"
+                labelKey="footer_col1_heading"
+                defaultText="Explore"
+                className="uppercase tracking-wider text-stone-400 font-semibold"
+              />
               <ul className="space-y-2">
                 <li><a href="#home" className="hover:text-amber-500 transition-colors">Home (मुख्य पृष्ठ)</a></li>
                 <li><a href="#about" className="hover:text-amber-500 transition-colors">About Merha (परिचय)</a></li>
@@ -88,9 +129,12 @@ export const Footer: React.FC = () => {
               </ul>
             </div>
             <div className="space-y-2.5">
-              <p className="uppercase tracking-wider text-stone-400 font-semibold">
-                Community
-              </p>
+              <EditableText
+                as="p"
+                labelKey="footer_col2_heading"
+                defaultText="Community"
+                className="uppercase tracking-wider text-stone-400 font-semibold"
+              />
               <ul className="space-y-2">
                 <li><a href="#gallery" className="hover:text-amber-500 transition-colors">Gallery (गैलरी)</a></li>
                 <li><a href="#governance" className="hover:text-amber-500 transition-colors">Wards 1 & 2 (वार्ड)</a></li>
@@ -103,18 +147,24 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Administrative Reference */}
           <div className="md:col-span-3 space-y-2 text-xs text-stone-500 dark:text-stone-400">
-            <p className="uppercase tracking-wider text-stone-400 font-semibold">
-              Administrative Jurisdiction
-            </p>
-            <p>Village: Merha (मेड़ा)</p>
-            <p>Panchayat: Jamdhaha (जमदाहा)</p>
-            <p>Block: Katoria (कटोरिया)</p>
-            <p>District: Banka (बांका)</p>
-            <p>State: Bihar, India</p>
+            <EditableText
+              as="p"
+              labelKey="footer_col3_heading"
+              defaultText="Administrative Jurisdiction"
+              className="uppercase tracking-wider text-stone-400 font-semibold"
+            />
+            <div><EditableText as="p" labelKey="footer_jur_1" defaultText="Village: Merha (मेड़ा)" /></div>
+            <div><EditableText as="p" labelKey="footer_jur_2" defaultText="Panchayat: Jamdhaha (जमदाहा)" /></div>
+            <div><EditableText as="p" labelKey="footer_jur_3" defaultText="Block: Katoria (कटोरिया)" /></div>
+            <div><EditableText as="p" labelKey="footer_jur_4" defaultText="District: Banka (बांका)" /></div>
+            <div><EditableText as="p" labelKey="footer_jur_5" defaultText="State: Bihar, India" /></div>
             <div className="pt-2 border-t border-stone-200 dark:border-white/10 space-y-1">
-              <p className="text-[11px] uppercase tracking-wider text-stone-400">
-                Official Web Portals
-              </p>
+              <EditableText
+                as="p"
+                labelKey="footer_portals_label"
+                defaultText="Official Web Portals"
+                className="text-[11px] uppercase tracking-wider text-stone-400"
+              />
               <p>
                 <a
                   href="https://vill-merha.vercel.app"
@@ -136,12 +186,16 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-400">
-          <p>
-            © {new Date().getFullYear()} Merha Village (मेड़ा गांव, जमदाहा, बांका, बिहार). Community Digital Heritage Portal.
-          </p>
-          <p>
-            Static & Local-First Architecture · Ready for Vercel, Netlify & GitHub Pages
-          </p>
+          <EditableText
+            as="p"
+            labelKey="footer_copyright_left"
+            defaultText={`© ${new Date().getFullYear()} Merha Village (मेड़ा गांव, जमदाहा, बांका, बिहार). Community Digital Heritage Portal.`}
+          />
+          <EditableText
+            as="p"
+            labelKey="footer_copyright_right"
+            defaultText="Official Digital Portal · Merha Village, Banka, Bihar"
+          />
         </div>
       </div>
 

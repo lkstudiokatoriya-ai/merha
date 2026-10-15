@@ -15,18 +15,30 @@ export const WardsAndAdminSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Part 1: Village Wards (Ward No. 1 & Ward No. 2) */}
         <div className="max-w-3xl">
-          <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
-            07 &nbsp;·&nbsp; Grassroots Structure & Wards
-          </p>
-          <h2
-            className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-            style={{ textWrap: 'balance' }}
-          >
-            Village Wards (वार्ड संख्या १ एवं वार्ड संख्या २)
-          </h2>
-          <p className="mt-3 text-base text-stone-600 dark:text-stone-300">
-            Merha Village is organized into dedicated Panchayat Wards to ensure transparent civic representation, rural infrastructure delivery, and community participation.
-          </p>
+          <EditableText
+            as="p"
+            labelKey="wards_kicker"
+            defaultText="07 · Grassroots Structure & Wards"
+            className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium"
+          />
+          <div className="mt-2">
+            <EditableText
+              as="h2"
+              labelKey="wards_heading"
+              defaultText="Village Wards (वार्ड संख्या १ एवं वार्ड संख्या २)"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+              style={{ textWrap: 'balance' }}
+            />
+          </div>
+          <div className="mt-3">
+            <EditableText
+              as="p"
+              multiline
+              labelKey="wards_intro"
+              defaultText="Merha Village is organized into dedicated Panchayat Wards to ensure transparent civic representation, rural infrastructure delivery, and community participation."
+              className="text-base text-stone-600 dark:text-stone-300"
+            />
+          </div>
         </div>
 
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -148,15 +160,29 @@ export const WardsAndAdminSection: React.FC = () => {
         {/* Part 2: Local Administration Roster */}
         <div className="mt-20 pt-16 border-t border-stone-200 dark:border-white/10">
           <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium">
-              08 &nbsp;·&nbsp; Public Administration & Representation
-            </p>
-            <h3 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-              Local Administration & Jurisdiction (स्थानीय प्रशासन एवं जनप्रतिनिधि)
-            </h3>
-            <p className="mt-2 text-sm sm:text-base text-stone-600 dark:text-stone-300">
-              Official administrative directory for Merha Village.
-            </p>
+            <EditableText
+              as="p"
+              labelKey="admin_kicker"
+              defaultText="08 · Public Administration & Representation"
+              className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium"
+            />
+            <div className="mt-2">
+              <EditableText
+                as="h3"
+                labelKey="admin_heading"
+                defaultText="Local Administration & Jurisdiction (स्थानीय प्रशासन एवं जनप्रतिनिधि)"
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+              />
+            </div>
+            <div className="mt-2">
+              <EditableText
+                as="p"
+                multiline
+                labelKey="admin_intro"
+                defaultText="Official administrative directory for Merha Village."
+                className="text-sm sm:text-base text-stone-600 dark:text-stone-300"
+              />
+            </div>
           </div>
 
           <div className="mt-8 overflow-hidden rounded-2xl border border-stone-200 dark:border-white/10 bg-white dark:bg-[#0D1E25]">

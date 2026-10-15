@@ -159,4 +159,5 @@ export interface VillageData {
     officeAddress: string;
     helpNote: string;
   };
+  uiLabels?: Record<string, string>;
 }

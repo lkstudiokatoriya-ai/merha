@@ -19,15 +19,21 @@ export const EducationAndCultureSection: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-6">
-              <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
-                04 &nbsp;·&nbsp; Learning & Youth Empowerment
-              </p>
-              <h2
-                className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-                style={{ textWrap: 'balance' }}
-              >
-                Village Education & Schools (शिक्षा एवं विद्यालय)
-              </h2>
+              <EditableText
+                as="p"
+                labelKey="edu_kicker"
+                defaultText="04 · Learning & Youth Empowerment"
+                className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium"
+              />
+              <div className="mt-2">
+                <EditableText
+                  as="h2"
+                  labelKey="edu_heading"
+                  defaultText="Village Education & Schools (शिक्षा एवं विद्यालय)"
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                  style={{ textWrap: 'balance' }}
+                />
+              </div>
               <div className="mt-4">
                 <EditableText
                   as="p"
@@ -47,7 +53,10 @@ export const EducationAndCultureSection: React.FC = () => {
               <div className="mt-8 p-6 rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-transparent">
                 <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-amber-700 dark:text-amber-300 font-semibold">
                   <BookOpen className="w-4 h-4" />
-                  <span>Village Education Charter</span>
+                  <EditableText
+                    labelKey="edu_charter_label"
+                    defaultText="Village Education Charter"
+                  />
                 </div>
                 <div className="mt-2">
                   <EditableText
@@ -82,7 +91,7 @@ export const EducationAndCultureSection: React.FC = () => {
               <div className="rounded-2xl overflow-hidden border border-stone-200 dark:border-white/15 shadow-xl">
                 <div className="relative h-72 sm:h-80">
                   <ResilientImage
-                    src="/src/assets/images/village_school_education_1791458769892.jpg"
+                    src="/images/village_school_education_1791458769892.jpg"
                     alt="Merha Village School & Education"
                     fallbackLabel="Merha Village Education"
                     className="w-full h-full object-cover"
@@ -90,12 +99,20 @@ export const EducationAndCultureSection: React.FC = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#071318] via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-5 right-5 text-white">
-                    <p className="text-xs uppercase tracking-wider text-amber-300">
-                      Academic Foundation &nbsp;·&nbsp; Jamdhaha & Merha
-                    </p>
-                    <p className="text-lg font-display font-semibold mt-0.5">
-                      Nurturing the Next Generation of Scholars & Citizens
-                    </p>
+                    <EditableText
+                      as="p"
+                      labelKey="edu_img_kicker"
+                      defaultText="Academic Foundation · Jamdhaha & Merha"
+                      className="text-xs uppercase tracking-wider text-amber-300"
+                    />
+                    <div className="mt-0.5">
+                      <EditableText
+                        as="p"
+                        labelKey="edu_img_caption"
+                        defaultText="Nurturing the Next Generation of Scholars & Citizens"
+                        className="text-lg font-display font-semibold"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -203,15 +220,21 @@ export const EducationAndCultureSection: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium">
-              05 &nbsp;·&nbsp; Heritage, Devotion & Brotherhood
-            </p>
-            <h2
-              className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-              style={{ textWrap: 'balance' }}
-            >
-              Culture & Community Life (संस्कृति एवं सामुदायिक जीवन)
-            </h2>
+            <EditableText
+              as="p"
+              labelKey="culture_kicker"
+              defaultText="05 · Heritage, Devotion & Brotherhood"
+              className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium"
+            />
+            <div className="mt-2">
+              <EditableText
+                as="h2"
+                labelKey="culture_heading"
+                defaultText="Culture & Community Life (संस्कृति एवं सामुदायिक जीवन)"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                style={{ textWrap: 'balance' }}
+              />
+            </div>
             <div className="mt-3">
               <EditableText
                 as="p"

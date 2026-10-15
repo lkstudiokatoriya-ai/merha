@@ -1,5 +1,35 @@
-import React, { useState } from 'react';
-import { Mountain } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import merhaHeroImg from '../assets/images/merha_hero_landscape_1791458712697.jpg';
+import kurarBridgeImg from '../assets/images/kurar_river_bridge_1791458725776.jpg';
+import katoriaHillsImg from '../assets/images/katoria_hills_forest_1791458736547.jpg';
+import villageFieldsImg from '../assets/images/village_fields_farming_1791458747662.jpg';
+import villageTempleImg from '../assets/images/village_temple_culture_1791458758312.jpg';
+import villageSchoolImg from '../assets/images/village_school_education_1791458769892.jpg';
+
+const BUILTIN_IMAGES: Record<string, string> = {
+  'merha_hero_landscape_1791458712697.jpg': merhaHeroImg,
+  'kurar_river_bridge_1791458725776.jpg': kurarBridgeImg,
+  'katoria_hills_forest_1791458736547.jpg': katoriaHillsImg,
+  'village_fields_farming_1791458747662.jpg': villageFieldsImg,
+  'village_temple_culture_1791458758312.jpg': villageTempleImg,
+  'village_school_education_1791458769892.jpg': villageSchoolImg,
+};
+
+export function resolveVillageImageUrl(rawSrc?: string): string {
+  if (!rawSrc || !rawSrc.trim()) {
+    return merhaHeroImg;
+  }
+  const trimmed = rawSrc.trim();
+  for (const [filename, bundledUrl] of Object.entries(BUILTIN_IMAGES)) {
+    if (trimmed.includes(filename)) {
+      return bundledUrl;
+    }
+  }
+  if (trimmed.startsWith('/src/assets/images/')) {
+    return trimmed.replace('/src/assets/images/', '/images/');
+  }
+  return trimmed;
+}
 
 interface ResilientImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -16,28 +46,26 @@ export const ResilientImage: React.FC<ResilientImageProps> = ({
   className = '',
   ...props
 }) => {
-  const [hasError, setHasError] = useState(false);
+  const resolvedSrc = resolveVillageImageUrl(src);
+  const [currentSrc, setCurrentSrc] = useState(resolvedSrc);
 
-  if (hasError || !src) {
-    return (
-      <div
-        className={`flex flex-col items-center justify-center bg-gradient-to-br from-[#0D2129] via-[#122D28] to-[#1A2E22] text-amber-200/80 p-6 text-center ${containerClassName} ${className}`}
-      >
-        <Mountain className="w-8 h-8 mb-2 text-amber-400/80 stroke-[1.5]" />
-        <span className="text-xs font-medium tracking-wide text-stone-300">
-          {fallbackLabel || alt}
-        </span>
-      </div>
-    );
-  }
+  useEffect(() => {
+    setCurrentSrc(resolveVillageImageUrl(src));
+  }, [src]);
 
   return (
     <img
-      src={src}
-      alt={alt}
+      src={currentSrc || merhaHeroImg}
+      alt={alt || fallbackLabel || 'Merha Village'}
       referrerPolicy="no-referrer"
       loading="lazy"
-      onError={() => setHasError(true)}
+      onError={() => {
+        if (currentSrc !== merhaHeroImg) {
+          setCurrentSrc(merhaHeroImg);
+        } else if (currentSrc !== '/Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png') {
+          setCurrentSrc('/Gemini_Generated_Image_4k9nnx4k9nnx4k9n.png');
+        }
+      }}
       className={className}
       {...props}
     />

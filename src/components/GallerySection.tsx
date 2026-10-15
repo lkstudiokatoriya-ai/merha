@@ -4,6 +4,7 @@ import { Maximize2, X, ChevronLeft, ChevronRight, SlidersHorizontal } from 'luci
 import { useVillage } from '../context/VillageContext';
 import { GalleryCategory } from '../types/village';
 import { ResilientImage } from './ResilientImage';
+import { EditableText } from './EditableText';
 
 const CATEGORIES: GalleryCategory[] = [
   'All',
@@ -18,7 +19,7 @@ const CATEGORIES: GalleryCategory[] = [
 ];
 
 export const GallerySection: React.FC = () => {
-  const { data, openAdminAt, isAdminAuthenticated } = useVillage();
+  const { data, updateData, openAdminAt, isAdminAuthenticated } = useVillage();
   const { gallery } = data;
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -60,18 +61,30 @@ export const GallerySection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
-              06 &nbsp;·&nbsp; Visual Archive & Landscapes
-            </p>
-            <h2
-              className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-              style={{ textWrap: 'balance' }}
-            >
-              Merha Village Gallery (ग्राम चित्र दीर्घा)
-            </h2>
-            <p className="mt-3 text-base text-stone-600 dark:text-stone-300">
-              Explore visual perspectives of Merha Village, the Kurar River, bridge, Katoria hills, agricultural fields, festivals, and school life. Every photo URL can be updated or expanded in the Content Studio.
-            </p>
+            <EditableText
+              as="p"
+              labelKey="gallery_kicker"
+              defaultText="06 · Visual Archive & Landscapes"
+              className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium"
+            />
+            <div className="mt-2">
+              <EditableText
+                as="h2"
+                labelKey="gallery_heading"
+                defaultText="Merha Village Gallery (ग्राम चित्र दीर्घा)"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                style={{ textWrap: 'balance' }}
+              />
+            </div>
+            <div className="mt-3">
+              <EditableText
+                as="p"
+                multiline
+                labelKey="gallery_intro"
+                defaultText="Explore visual perspectives of Merha Village, the Kurar River, bridge, Katoria hills, agricultural fields, festivals, and school life. Every photo URL can be updated or expanded in the Content Studio."
+                className="text-base text-stone-600 dark:text-stone-300"
+              />
+            </div>
           </div>
 
           {isAdminAuthenticated && (
@@ -149,12 +162,36 @@ export const GallerySection: React.FC = () => {
                 <p className="text-[11px] uppercase tracking-wider text-amber-300 font-medium">
                   {item.category}
                 </p>
-                <h3 className="text-lg font-bold font-display text-white leading-snug mt-0.5">
-                  {item.title}
-                </h3>
-                <p className="text-xs font-hindi text-stone-300 mt-0.5">
-                  {item.titleHi}
-                </p>
+                <div className="mt-0.5">
+                  <EditableText
+                    as="h3"
+                    value={item.title}
+                    onChange={(val) => {
+                      const realIdx = gallery.findIndex((g) => g.id === item.id);
+                      if (realIdx !== -1) {
+                        const next = [...gallery];
+                        next[realIdx] = { ...item, title: val };
+                        updateData({ ...data, gallery: next });
+                      }
+                    }}
+                    className="text-lg font-bold font-display text-white leading-snug"
+                  />
+                </div>
+                <div className="mt-0.5">
+                  <EditableText
+                    as="p"
+                    value={item.titleHi}
+                    onChange={(val) => {
+                      const realIdx = gallery.findIndex((g) => g.id === item.id);
+                      if (realIdx !== -1) {
+                        const next = [...gallery];
+                        next[realIdx] = { ...item, titleHi: val };
+                        updateData({ ...data, gallery: next });
+                      }
+                    }}
+                    className="text-xs font-hindi text-stone-300"
+                  />
+                </div>
               </figcaption>
             </motion.figure>
           ))}

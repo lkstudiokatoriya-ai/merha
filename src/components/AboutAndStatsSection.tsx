@@ -16,15 +16,21 @@ export const AboutAndStatsSection: React.FC = () => {
         {/* Section Header + Editorial Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           <div className="lg:col-span-5">
-            <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
-              01 &nbsp;·&nbsp; Village Identity & Gazetteer
-            </p>
-            <h2
-              className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA] leading-tight"
-              style={{ textWrap: 'balance' }}
-            >
-              About Merha Village (मेड़ा गांव का परिचय)
-            </h2>
+            <EditableText
+              as="p"
+              labelKey="about_kicker"
+              defaultText="01 · Village Identity & Gazetteer"
+              className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium"
+            />
+            <div className="mt-2">
+              <EditableText
+                as="h2"
+                labelKey="about_heading"
+                defaultText="About Merha Village (मेड़ा गांव का परिचय)"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA] leading-tight"
+                style={{ textWrap: 'balance' }}
+              />
+            </div>
             <div className="mt-6 pl-4 border-l-2 border-amber-500/70">
               <EditableText
                 as="blockquote"
@@ -55,9 +61,10 @@ export const AboutAndStatsSection: React.FC = () => {
               className="text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed max-w-2xl"
             />
             <div className="pt-2 flex flex-wrap items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-400">
-              <span>
-                Official Administrative Hierarchy &nbsp;·&nbsp; Banka District, Bihar
-              </span>
+              <EditableText
+                labelKey="about_sub_caption"
+                defaultText="Official Administrative Hierarchy · Banka District, Bihar"
+              />
             </div>
           </div>
         </div>
@@ -136,12 +143,20 @@ export const AboutAndStatsSection: React.FC = () => {
         <div className="mt-16 pt-12 border-t border-stone-200 dark:border-white/10">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
-              <p className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium">
-                Key Village Figures &nbsp;·&nbsp; Configurable Indicators
-              </p>
-              <h3 className="mt-1 text-2xl sm:text-3xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]">
-                Merha at a Glance (एक नज़र में मेड़ा गांव)
-              </h3>
+              <EditableText
+                as="p"
+                labelKey="stats_kicker"
+                defaultText="Key Village Figures · Configurable Indicators"
+                className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium"
+              />
+              <div className="mt-1">
+                <EditableText
+                  as="h3"
+                  labelKey="stats_heading"
+                  defaultText="Merha at a Glance (एक नज़र में मेड़ा गांव)"
+                  className="text-2xl sm:text-3xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                />
+              </div>
             </div>
           </div>
 

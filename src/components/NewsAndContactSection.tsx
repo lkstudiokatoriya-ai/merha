@@ -65,18 +65,30 @@ export const NewsAndContactSection: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium">
-              10 &nbsp;·&nbsp; Community Bulletin & Notices
-            </p>
-            <h2
-              className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-              style={{ textWrap: 'balance' }}
-            >
-              Village News & Updates (ग्राम समाचार एवं सूचनाएं)
-            </h2>
-            <p className="mt-3 text-base text-stone-600 dark:text-stone-300">
-              Stay informed about village development works, school academic sessions, Kurar River bridge maintenance, festivals, and Gram Sabha announcements.
-            </p>
+            <EditableText
+              as="p"
+              labelKey="news_kicker"
+              defaultText="10 · Community Bulletin & Notices"
+              className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-medium"
+            />
+            <div className="mt-2">
+              <EditableText
+                as="h2"
+                labelKey="news_heading"
+                defaultText="Village News & Updates (ग्राम समाचार एवं सूचनाएं)"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                style={{ textWrap: 'balance' }}
+              />
+            </div>
+            <div className="mt-3">
+              <EditableText
+                as="p"
+                multiline
+                labelKey="news_intro"
+                defaultText="Stay informed about village development works, school academic sessions, Kurar River bridge maintenance, festivals, and Gram Sabha announcements."
+                className="text-base text-stone-600 dark:text-stone-300"
+              />
+            </div>
           </div>
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -177,25 +189,40 @@ export const NewsAndContactSection: React.FC = () => {
             {/* Left Info Column */}
             <div className="lg:col-span-5 space-y-6">
               <div>
-                <p className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium">
-                  11 &nbsp;·&nbsp; Citizen Voice & Suggestions
-                </p>
-                <h2
-                  className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
-                  style={{ textWrap: 'balance' }}
-                >
-                  Contact & Village Suggestions (संपर्क एवं सुझाव)
-                </h2>
-                <p className="mt-3 text-base text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Share your ideas for village development, school improvements, cultural archiving, or photo contributions for Merha Village.
-                </p>
+                <EditableText
+                  as="p"
+                  labelKey="contact_kicker"
+                  defaultText="11 · Citizen Voice & Suggestions"
+                  className="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-medium"
+                />
+                <div className="mt-2">
+                  <EditableText
+                    as="h2"
+                    labelKey="contact_heading"
+                    defaultText="Contact & Village Suggestions (संपर्क एवं सुझाव)"
+                    className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-stone-900 dark:text-[#F4F1EA]"
+                    style={{ textWrap: 'balance' }}
+                  />
+                </div>
+                <div className="mt-3">
+                  <EditableText
+                    as="p"
+                    multiline
+                    labelKey="contact_intro"
+                    defaultText="Share your ideas for village development, school improvements, cultural archiving, or photo contributions for Merha Village."
+                    className="text-base text-stone-600 dark:text-stone-300 leading-relaxed"
+                  />
+                </div>
               </div>
 
               <div className="p-6 rounded-2xl border border-stone-200 dark:border-white/10 bg-white dark:bg-[#0D1E25] space-y-4">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-stone-500 dark:text-stone-400">
-                    Village Address
-                  </p>
+                  <EditableText
+                    as="p"
+                    labelKey="contact_addr_label"
+                    defaultText="Village Address"
+                    className="text-xs uppercase tracking-wider text-stone-500 dark:text-stone-400"
+                  />
                   <div className="mt-1">
                     <EditableText
                       as="p"
@@ -216,9 +243,12 @@ export const NewsAndContactSection: React.FC = () => {
                 </div>
 
                 <div className="pt-3 border-t border-stone-100 dark:border-white/5">
-                  <p className="text-xs uppercase tracking-wider text-stone-500 dark:text-stone-400">
-                    Direct Portal Submission
-                  </p>
+                  <EditableText
+                    as="p"
+                    labelKey="contact_portal_label"
+                    defaultText="Direct Portal Submission"
+                    className="text-xs uppercase tracking-wider text-stone-500 dark:text-stone-400"
+                  />
                   <div className="mt-1">
                     <EditableText
                       as="p"

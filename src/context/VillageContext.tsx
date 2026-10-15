@@ -183,6 +183,7 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({
                 cloudData.newsUpdates || defaultVillageData.newsUpdates,
               contactConfig:
                 cloudData.contactConfig || defaultVillageData.contactConfig,
+              uiLabels: cloudData.uiLabels || {},
             };
             setData(merged);
             try {
@@ -348,6 +349,7 @@ export const VillageProvider: React.FC<{ children: React.ReactNode }> = ({
         mapConfig: payloadData.mapConfig,
         newsUpdates: payloadData.newsUpdates.slice(0, 100),
         contactConfig: payloadData.contactConfig,
+        uiLabels: payloadData.uiLabels || {},
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser?.uid || ADMIN_EMAIL,
       });
